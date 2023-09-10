@@ -179,60 +179,75 @@ function Dashboard({ token }) {
 
         {/* User Profile */}
         <div className="flex items-center">
-        <div className="md:w-1/4 text-center text-white" id='pictu'>
-            {
-              visible && <img
-              src={picture ? URL.createObjectURL(base64ToBinary(picture)) : ''}
-              alt="Trainer picture"
-              className="w-32 h-32 mx-auto rounded-full transition ease-in bg-primary/60"
-            />
-            }
-              
-            <button onClick={() => setIsProfileModalOpen(true)} className='bg-primary text-white rounded-md font-medium p-2 mt-5 mx-auto md:mx-0 py-3 font-font2'>Edit Profile</button>
-          </div>
-          <div className="bg-white p-6 rounded-lg shadow-md mb-4 w-full">
-            <h2 className="text-xl font-semibold text-gray-800">User Profile</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              <div>
-                <p className="text-gray-600">Name</p>
-                <p className="text-lg font-semibold">{name}</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Gender</p>
-                <p className="text-lg font-semibold">{ gender.charAt(0).toUpperCase() + gender.slice(1) }</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Phone</p>
-                <p className="text-lg font-semibold">{ phone }</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Age</p>
-                <p className="text-lg font-semibold">{age} years</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Email</p>
-                <p className="text-lg font-semibold">{email}</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Height</p>
-                <p className="text-lg font-semibold">{height}</p>
-              </div>
-              <div>
-                <p className="text-gray-600">Weight</p>
-                <p className="text-lg font-semibold">{weight}</p>
-              </div>
-              <div>
-                <p className="text-gray-600">BMI</p>
-                <p className="text-lg font-semibold">{(weight/(height ^ 2)).toFixed(2)}</p>
-              </div>
-            </div>
-          </div>
+        <div className="bg-white p-6 rounded-lg shadow-md mb-4 w-full md:flex">
+  {/* Image and button */}
+  <div className="md:w-1/4 text-center text-white mb-4 md:mb-0" id='pictu'>
+    {visible && (
+      <img
+        src={picture ? URL.createObjectURL(base64ToBinary(picture)) : ''}
+        alt="Trainer picture"
+        className="w-32 h-32 mx-auto rounded-full transition ease-in bg-primary/60"
+      />
+    )}
+
+    <button
+      onClick={() => setIsProfileModalOpen(true)}
+      className="bg-primary text-white rounded-md font-medium p-2 mt-5 mx-auto md:mx-0 py-3 font-font2"
+    >
+      Edit Profile
+    </button>
+  </div>
+
+  <div className="md:w-3/4">
+    <h2 className="text-xl font-semibold text-secondary font-font1">User Profile</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      {/* Profile information */}
+      <div>
+        <p className="text-gray-600">Name</p>
+        <p className="text-lg font-semibold">{name}</p>
+      </div>
+      <div>
+        <p className="text-gray-600">Gender</p>
+        <p className="text-lg font-semibold">
+          {gender.charAt(0).toUpperCase() + gender.slice(1)}
+        </p>
+      </div>
+      <div>
+        <p className="text-gray-600">Phone</p>
+        <p className="text-lg font-semibold">{phone}</p>
+      </div>
+      <div>
+        <p className="text-gray-600">Age</p>
+        <p className="text-lg font-semibold">{age} years</p>
+      </div>
+      <div>
+        <p className="text-gray-600">Email</p>
+        <p className="text-lg font-semibold">{email}</p>
+      </div>
+      <div>
+        <p className="text-gray-600">Height</p>
+        <p className="text-lg font-semibold">{height} m<sup>2</sup></p>
+      </div>
+      <div>
+        <p className="text-gray-600">Weight</p>
+        <p className="text-lg font-semibold">{weight} kg</p>
+      </div>
+      <div>
+        <p className="text-gray-600">BMI</p>
+        <p className="text-lg font-semibold">
+          {(weight / (height ** 2)).toFixed(2)} kg/m<sup>2</sup>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
         </div>
         {/* User Profile Modal */}
       {isProfileModalOpen && (
         <div className="fixed inset-0 h-full w-full flex items-center justify-center z-50">
           <div className="bg-white p-4 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
+            <h2 className="text-xl font-semibold mb-4 text-secondary font-font1">Edit Profile</h2>
             <div className="mb-4">
               <label htmlFor='picture' className="block text-gray-600 mb-1">Name</label>
               <input
@@ -313,7 +328,7 @@ function Dashboard({ token }) {
         {/* Goals */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-4">
           <div className='flex justify-between'>
-            <h2 className="text-xl font-semibold text-gray-800">Goals</h2>
+            <h2 className="text-xl font-semibold text-secondary font-font1">Goals</h2>
             <FaPlus size={25} onClick={handleClick} className='text-primary cursor-pointer'/>
           </div>
           
@@ -362,7 +377,7 @@ function Dashboard({ token }) {
 
         {/* Charts */}
         <div className="mt-8">
-          <h2 className="text-xl font-semibold text-gray-800">Weekly Progress</h2>
+          <h2 className="text-xl font-semibold text-secondary font-font1">Weekly Progress</h2>
           {/* Add your fitness progress chart component here */}
         </div>
       </div>
