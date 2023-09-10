@@ -19,15 +19,18 @@ const Navbar = ({ login, token, username }) => {
 
         <ul className='hidden md:flex cursor-pointer font-font1 bg-white/5 rounded-full'>
           <li className='px-6 py-2'><Link to="/">Home</Link></li>
+          <li className='px-6 py-2'><Link to="/about">About</Link></li>
           <li className='px-6 py-2'><Link to="/trainers">Trainers</Link></li>
           <li className='px-6 py-2'><Link to="/classes">Classes</Link></li>
-          <li className='px-6 py-2'><Link to="/about">About</Link></li>
           {!login && (<li className='px-6 py-2'><Link to="/login">Sign in</Link></li>)}
           {!login && (<li className='px-6 py-2'><Link to="/register">Sign up</Link></li>)}
         </ul>
 
-        <div onClick={toggleNav} className='block md:hidden cursor-pointer'>
-          {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
+        
+        <div className='md:hidden'>
+          <div onClick={toggleNav} className='cursor-pointer'>
+            {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
+          </div>
         </div>
 
         <div className={nav ? 'absolute z-10 left-0 top-24 w-[60%] h-full border-r border-r-gray-900 bg-primary ease-in-out duration-500' : 'fixed left-[-100%]'}>
