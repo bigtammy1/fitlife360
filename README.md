@@ -4,7 +4,7 @@
 
 > FitLife360 is designed to empower individuals on their journey to improved well-being. It offers a holistic approach to health, providing personalized exercise recommendations and progress monitoring. Whether your goal is weight management, muscle gain or staying fit, FitLife360 offers the required guidance.
 
-![FitLife360](/client/FitLife360/src/assets/appIcon.png)
+![FitLife360](client/FitLife360/src/assets/icon.png)
 
 ## Task - Full Stack webstack portfolio project(FitLife360)
 
@@ -39,4 +39,4 @@ The ALX Holberton Software Engineering programme is a 12-month(70h/week) immersi
 - Adeyemi Adejumo ([@Ade-yem](https://github.com/Ade-yem))
 - Emmanuel Akinwande ([@Morakinyo75](https://github.com/morakinyo75))
 
-> Show love by leaving a ⭐️ if you like this project and don't forget to fork, break and modify
+> Show love by leaving a ⭐️ if you like this project 
