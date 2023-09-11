@@ -1,1 +1,3 @@
-## Frontend created with react
+# Frontend created with react
+
+Authors: Mercy Nwaodu | Emmanuel Akinwande
