@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import './App.css'
 import Training from './pages/Training';
 import Home from './pages/Home';
-import Navbar from './components/Navbar';
+import Navbar from './components/navbar';
 import Footer from './components/Footer';
 
 const App = () => {
