@@ -2,11 +2,11 @@ import React from 'react';
 import Gym from '../assets/gym1.jpg';
 import { Link } from 'react-router-dom';
 
-const Analytics = () => {
+const Hero = () => {
   return (
     <div className='w-full bg-white py-16 px-4'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2 gap-8'>
-        <img className='w-[500px] mx-auto my-4' src={Gym} alt='/' />
+        <img className='w-[400px] h-[400px] mx-auto my-4' src={Gym} alt='/' />
         <div className='flex flex-col justify-center'>
        
           <h1 className='md:text-4xl sm:text-3xl text-center md:text-left text-2xl font-bold py-2 font-font1'>Unleash your fitness potentials from the comfort of your home</h1>
@@ -18,4 +18,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+export default Hero;
