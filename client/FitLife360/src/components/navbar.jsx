@@ -17,7 +17,7 @@ const Navbar = () => {
           <img src={Logo} className='w-100 h-20' alt='Logo' />
         </span>
 
-        <ul className='hidden md:flex cursor-pointer'>
+        <ul className='hidden md:flex cursor-pointer font-font1'>
           <li className='p-6'><Link to="/">HOME</Link></li>
           <li className='p-6'><Link to="/about">ABOUT</Link></li>
           <li className='p-6'><Link to="/login">SIGN IN</Link></li>
@@ -29,7 +29,7 @@ const Navbar = () => {
         </div>
 
         <div className={nav ? 'fixed left-0 top-24 w-[60%] h-full border-r border-r-gray-900 bg-primary ease-in-out duration-500' : 'fixed left-[-100%]'}>
-          <ul className='p-3 cursor-pointer'>
+          <ul className='p-3 cursor-pointer font-font1'>
             <li className='p-6 border-b border-gray-400'><Link to="/">HOME</Link></li>
             <li className='p-6 border-b border-gray-400'><Link to="/about">ABOUT</Link></li> {/* Fixed the label */}
             <li className='p-6 border-b border-gray-400'><Link to="/login">SIGN IN</Link></li>
