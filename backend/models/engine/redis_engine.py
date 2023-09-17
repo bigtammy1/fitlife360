@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 """Redis Engine"""
 import redis
-from redis import Redis
+import os
 
 
 class RedisEngine:
     """Redis client"""
     def __init__(self):
         """Constructor"""
-        url="rediss://red-ck3bdar6fquc739tsmsg:5ccMtEw1a6eajZIV409Po8e0Zt6jhGRV@oregon-redis.render.com:6379"
+        url= os.getenv('REDIS_URL')
         self.__redis = redis.from_url(url, decode_responses=True, ssl_cert_reqs=None)
     
     def isAlive(self):
