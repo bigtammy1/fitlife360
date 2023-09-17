@@ -14,7 +14,7 @@ class Instructor(BaseModel):
     """Representation of a user """
 
     __tablename__ = 'instructors'
-    email = Column(String(128), nullable=False)
+    email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     name = Column(String(128), nullable=True)
     gender = Column(String(60), CheckConstraint("gender IN ('male', 'female')"), nullable=False)

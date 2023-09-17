@@ -8,3 +8,4 @@ redis-7.2.1.tar.gz
 redis-7.2.1/
 alembic/
 dump.rdb
+.vscode

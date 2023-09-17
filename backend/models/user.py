@@ -18,12 +18,14 @@ user_classes = Table('user_classes', Base.metadata,
 class User(BaseModel):
     """Representation of a user """
     __tablename__ = 'users'
-    email = Column(String(128), nullable=False)
+    email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     name = Column(String(128), nullable=True)
     picture = Column(String(255))
     gender = Column(String(60), CheckConstraint("gender in ('male', 'female')"), nullable=False)
     phone = Column(String(20))
+    weight = Column(Float)
+    height = Column(Float)
     classes = relationship('Class', secondary=user_classes, back_populates='users')
 
     def __init__(self, *args, **kwargs):

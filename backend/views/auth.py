@@ -34,15 +34,36 @@ def user_login() -> str:
         return make_response(jsonify({'error': 'Invalid credentials'}), 401)
     if user.password != md5(password.encode()).hexdigest():
         return make_response(jsonify({'error': 'Invalid credentials'}), 401)
-    token = f'user_{generate_token()}'
-    redis_storage.set(token, user.id, user_expiration)
+    token = generate_token()
+    key = f'user_{token}'
+    redis_storage.set(key, user.id, user_expiration)
     return make_response(jsonify({'message': 'User login successful', 'token': token}), 200)
 
 
 @app_views.route('/user/register', methods=['POST'], strict_slashes=False)
 def user_register() -> str:
-    """User login"""
+    """User registration"""
     data = request.get_json()
+    name, email, gender, phone, password = data.values()
+    if not name or not email or not gender or not password or not phone:
+        return make_response(jsonify({'error': 'Missing credentials'}), 401)
+    # check for user
+    user = storage.get_by(User, 'email', email)
+    if user:
+        return make_response(jsonify({'error': 'User exists'}), 401)
+    kwargs = {
+    'name': name,
+    'email': email,
+    'gender': gender,
+    'phone': phone,
+    'password': password,
+    }
+    user = User(**kwargs)
+    user.save()
+    token = generate_token()
+    key = f'user_{token}'
+    redis_storage.set(key, user.id, user_expiration)
+    return make_response(jsonify({'message': 'User created successfully', 'token': token}), 201)
 
 
 # instructor authentication
@@ -64,12 +85,34 @@ def instructor_login() -> str:
         return make_response(jsonify({'error': 'Invalid credentials'}), 401)
     if instructor.password != md5(password.encode()).hexdigest():
         return make_response(jsonify({'error': 'Invalid credentials'}), 401)
-    token = f'instructor_{generate_token()}'
-    redis_storage.set(token, instructor.id, ins_expiration)
+    token = generate_token()
+    key = f'instructor_{token}'
+    redis_storage.set(key, instructor.id, ins_expiration)
     return make_response(jsonify({'message': 'Instructor login successful', 'token': token}), 200)
 
 
 @app_views.route('/instructor/register', methods=['POST'], strict_slashes=False)
-def user_register() -> str:
+def instructor_register() -> str:
     """User login"""
-    pass
+    """User registration"""
+    data = request.get_json()
+    name, email, gender, phone, password = data.values()
+    if not name or not email or not gender or not password or not phone:
+        return make_response(jsonify({'error': 'Missing credentials'}), 401)
+    # check for instructor
+    instructor = storage.get_by(Instructor, 'email', email)
+    if instructor:
+        return make_response(jsonify({'error': 'User exists'}), 401)
+    kwargs = {
+    'name': name,
+    'email': email,
+    'gender': gender,
+    'phone': phone,
+    'password': password,
+    }
+    instructor = Instructor(**kwargs)
+    instructor.save()
+    token = generate_token()
+    key = f'user_{token}'
+    redis_storage.set(key, instructor.id, ins_expiration)
+    return make_response(jsonify({'message': 'User created successfully', 'token': token}), 201)
