@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Redis Engine"""
-
+import redis
 from redis import Redis
 
 
@@ -8,7 +8,8 @@ class RedisEngine:
     """Redis client"""
     def __init__(self):
         """Constructor"""
-        self.__redis = Redis(host='localhost', port=6379, decode_responses=True)
+        url="rediss://red-ck3bdar6fquc739tsmsg:5ccMtEw1a6eajZIV409Po8e0Zt6jhGRV@oregon-redis.render.com:6379"
+        self.__redis = redis.from_url(url, decode_responses=True, ssl_cert_reqs=None)
     
     def isAlive(self):
         """checks if redis server is connected"""

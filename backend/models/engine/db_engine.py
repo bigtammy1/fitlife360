@@ -27,6 +27,9 @@ class DBStorage:
         MYSQL_PWD = getenv('MYSQL_PWD')
         MYSQL_HOST = getenv('MYSQL_HOST')
         MYSQL_DB = getenv('MYSQL_DB')
+        
+        # if you do not have mysql on your machine, use this
+        # self.__engine = create_engine("sqlite:///a.db", echo=False)
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(MYSQL_USER,
                                              MYSQL_PWD,
