@@ -1,11 +1,11 @@
 #!/usr/bin/python3
-""" holds class User"""
+""" Instructor"""
 
 import models
 from models.base import BaseModel
 from os import getenv
 import sqlalchemy
-from sqlalchemy import Column, String, Float
+from sqlalchemy import Column, String, Float, CheckConstraint
 from sqlalchemy.orm import relationship
 from hashlib import md5
 
@@ -16,10 +16,9 @@ class Instructor(BaseModel):
     __tablename__ = 'instructors'
     email = Column(String(128), nullable=False)
     password = Column(String(128), nullable=False)
-    first_name = Column(String(128), nullable=True)
-    last_name = Column(String(128), nullable=True)
+    name = Column(String(128), nullable=True)
+    gender = Column(String(60), CheckConstraint("gender IN ('male', 'female')"), nullable=False)
     picture = Column(String(255))
-    email = Column(String(100), nullable=False)
     phone = Column(String(20))
     bio = Column(String(255))
     approach = Column(String(255))

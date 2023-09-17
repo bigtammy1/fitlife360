@@ -6,13 +6,14 @@ Contains the class DBStorage
 import models
 from models.base import Base
 from models.classes import Class
+from models.user import User
 from models.instructor import Instructor
 from os import getenv
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from dotenv import load_dotenv
-classes = {"Class": Class, "Instructor": Instructor }
+classes = {"Class": Class, "Instructor": Instructor, 'User': User }
 load_dotenv()
 
 class DBStorage:
@@ -79,7 +80,17 @@ class DBStorage:
         for value in all_cls.values():
             if (value.id == id):
                 return value
+        return None
+    
+    def get_by(self, cls, key, val):
+        """Retuens object based on the keya and value"""
+        if cls not in classes.values():
+            return None
 
+        all_cls = models.storage.all(cls)
+        for value in all_cls.values():
+            if getattr(value, key) == val:
+                return value
         return None
 
     def count(self, cls=None):

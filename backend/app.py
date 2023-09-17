@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Flask engine"""
 
-from models import dbstorage
+from models import storage
 from flask import Flask, jsonify, make_response
 from flask_cors import CORS
 from os import getenv
@@ -15,7 +15,7 @@ app.register_blueprint(app_views)
 @app.teardown_appcontext
 def teardown_db(exception):
     """teardown"""
-    dbstorage.close()
+    storage.close()
 
 
 @app.route('/', strict_slashes=False)

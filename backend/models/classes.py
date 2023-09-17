@@ -4,6 +4,7 @@
 from sqlalchemy import Column, DateTime, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from .base import BaseModel
+from .user import user_classes
 
 
 class Class(BaseModel):
@@ -16,3 +17,4 @@ class Class(BaseModel):
     duration_minutes = Column(Integer)
     capacity = Column(Integer)
     image_url = Column(String(255))
+    users = relationship('User', secondary=user_classes, back_populates="classes")

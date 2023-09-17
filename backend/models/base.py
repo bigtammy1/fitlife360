@@ -5,13 +5,12 @@ Contains class BaseModel
 
 from datetime import datetime
 import models
-from sqlalchemy import Column, String, DateTime
+from sqlalchemy import Column, ForeignKey, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import uuid
+from sqlalchemy import Table, MetaData
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
-
-
 Base = declarative_base()
 metadata = Base.metadata
 

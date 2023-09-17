@@ -11,3 +11,4 @@ print(f"Redis is alive: {redis_storage.isAlive()}")
 from models.base import Base
 from models.classes import Class
 from models.instructor import Instructor
+from models.user import User
