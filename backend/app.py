@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Flask engine"""
 
-# create a .env file for environment variables
+from models import storage
 from flask import Flask, jsonify, make_response
 from flask_cors import CORS
 from os import getenv
@@ -10,6 +10,13 @@ from views import app_views
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 app.register_blueprint(app_views)
+
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    """teardown"""
+    storage.close()
+
 
 @app.route('/', strict_slashes=False)
 def index() -> str:
