@@ -59,5 +59,5 @@ def not_found(error):
 
 app.run(
     host=getenv('HOST', '0.0.0.0'), port=int(getenv('PORT', '5000')),
-    debug=True, load_dotenv=True, threaded=True
+    load_dotenv=True, threaded=True
 )
