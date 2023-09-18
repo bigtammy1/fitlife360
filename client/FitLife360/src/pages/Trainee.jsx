@@ -3,18 +3,17 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import Gym from '../assets/gym4.jpg';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
-import { AiOutlineUser, AiOutlinePhone, AiOutlineRise} from 'react-icons/ai';
-import { FaWeight } from 'react-icons/fa'
+import { AiOutlineUser, AiOutlinePhone} from 'react-icons/ai';
+
 
 const Trainee = () => {
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     gender: '',
     phoneNumber: '',
-    height: '',
-    weight: '',
+   
   });
 
   const handleSubmit = (e) => {
@@ -46,9 +45,9 @@ const Trainee = () => {
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
                   type="text"
-                  name="fullName"
+                  name="name"
                   placeholder="Full Name"
-                  value={formData.fullName}
+                  value={formData.name}
                   onChange={handleChange}
                 />
               </div>
@@ -96,28 +95,7 @@ const Trainee = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="relative mb-4">
-                <AiOutlineRise className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="text"
-                  name="height"
-                  placeholder="Height"
-                  value={formData.height}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="relative mb-4">
-                <FaWeight className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="text"
-                  name="weight"
-                  placeholder="Weight"
-                  value={formData.weight}
-                  onChange={handleChange}
-                />
-              </div>
+              
               <button
                 type="submit"
                 className="mt-2 p-3 w-full rounded-md bg-primary text-white hover:bg-primary-dark"
