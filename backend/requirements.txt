@@ -6,13 +6,15 @@ click==8.1.7
 Flask
 Flask-Cors
 greenlet==2.0.2
+gunicorn
 itsdangerous==2.1.2
 Jinja2==3.1.2
 Mako==1.2.4
 MarkupSafe==2.1.3
 mysqlclient
+packaging
 python-dotenv
 redis
 SQLAlchemy
-typing_extensions
-Werkzeug
+typing_extensions==4.7.1
+Werkzeug==2.3.7
