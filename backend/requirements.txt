@@ -17,4 +17,4 @@ python-dotenv
 redis
 SQLAlchemy
 typing_extensions==4.7.1
-Werkzeug==2.3.7
+Werkzeug
