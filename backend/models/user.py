@@ -10,9 +10,9 @@ from sqlalchemy.orm import relationship
 from hashlib import md5
 
 user_classes = Table('user_classes', Base.metadata,
-    Column('user_id', String(60), ForeignKey('users.id')),
-    Column('class_id', String(60), ForeignKey('classes.id'))
-)
+                     Column('user_id', String(60), ForeignKey('users.id')),
+                     Column('class_id', String(60), ForeignKey('classes.id'))
+                     )
 
 
 class User(BaseModel):
@@ -22,11 +22,15 @@ class User(BaseModel):
     password = Column(String(128), nullable=False)
     name = Column(String(128), nullable=True)
     picture = Column(String(255))
-    gender = Column(String(60), CheckConstraint("gender in ('male', 'female')"), nullable=False)
+    gender = Column(String(60), CheckConstraint(
+        "gender in ('male', 'female')"), nullable=False)
     phone = Column(String(20))
     weight = Column(Float)
     height = Column(Float)
-    classes = relationship('Class', secondary=user_classes, back_populates='users')
+    classes = relationship(
+        'Class',
+        secondary=user_classes,
+        back_populates='users')
 
     def __init__(self, *args, **kwargs):
         """initializes user"""

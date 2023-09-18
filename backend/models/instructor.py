@@ -17,7 +17,8 @@ class Instructor(BaseModel):
     email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     name = Column(String(128), nullable=True)
-    gender = Column(String(60), CheckConstraint("gender IN ('male', 'female')"), nullable=False)
+    gender = Column(String(60), CheckConstraint(
+        "gender IN ('male', 'female')"), nullable=False)
     picture = Column(String(255))
     phone = Column(String(20))
     bio = Column(String(255))
