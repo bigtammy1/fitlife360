@@ -2,7 +2,7 @@
 """ objects that handle all default RestFul API actions for Classs """
 from models.classes import Class
 from models import storage
-from .views import app_views
+from views import app_views
 from flask import abort, jsonify, make_response, request
 
 
