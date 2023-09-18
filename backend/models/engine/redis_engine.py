@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Redis Engine"""
 import redis
+from redis import Redis
 import os
 
 
@@ -8,7 +9,10 @@ class RedisEngine:
     """Redis client"""
     def __init__(self):
         """Constructor"""
-        url= os.getenv('REDIS_URL')
+        url= os.getenv('REDIS_URL', None)
+        # if url is None:
+        #     self.__redis = Redis('localhost', 6379, decode_responses=True)
+        # else: (development)
         self.__redis = redis.from_url(url, decode_responses=True, ssl_cert_reqs=None)
     
     def isAlive(self):

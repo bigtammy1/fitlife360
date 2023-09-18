@@ -23,12 +23,12 @@ class DBStorage:
 
     def __init__(self):
         """Instantiate a DBStorage object"""
-        MYSQL_USER = getenv('MYSQL_USER')
-        MYSQL_PWD = getenv('MYSQL_PWD')
-        MYSQL_HOST = getenv('MYSQL_HOST')
-        MYSQL_DB = getenv('MYSQL_DB')
+        MYSQL_USER = getenv('MYSQL_USER') #fitlife360
+        MYSQL_PWD = getenv('MYSQL_PWD') #fitlife360pwd
+        MYSQL_HOST = getenv('MYSQL_HOST') #localhost
+        MYSQL_DB = getenv('MYSQL_DB') #fitlfie360db
         
-        # if you do not have mysql on your machine, use this
+        # if you do not have mysql on your machine, use this (development)
         # self.__engine = create_engine("sqlite:///a.db", echo=False)
         self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
                                       format(MYSQL_USER,
