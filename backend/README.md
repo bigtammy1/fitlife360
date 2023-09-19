@@ -35,12 +35,13 @@ it should have these order and keys: `name, email, gender, phone, password`.
 
 example url: `https://fitlife360-backend.onrender.com/api/user/login`
 
-Name | Endpoint | Method | Parameters | Response | Status | Failed | Status
---- | --- | --- | --- | --- | ---
-User login | `/api/user/login` | POST | email, password | `{'message': 'User login successful', 'token': token}` | 200 | `{'error': 'Invalid credentials'}` | 400
-Instructor login | `/api/instructor/login` | POST | email, password | `{'message': 'User login successful', 'token': token}` | 200 | `{'error': 'Invalid credentials'}` | 401
-User registration | `/api/user/register` | POST | name, email, gender, phone, password | `{'message': 'User registered successfully', 'token': token}` | 200 | `{'error': 'User exists'}` | 401
-Instructor login | `/api/instructor/register` | POST | name, email, gender, phone, password | `{'message': 'User registered successfully', 'token': token}` | 200 | `{'error': 'User exists'}` | 401
+| Name               | Endpoint                  | Method | Parameters                              | Response                                       | Status | Failed                  | Status |
+| ------------------ | ------------------------- | ------ | --------------------------------------- | ---------------------------------------------- | ------ | ----------------------- | ------ |
+| User login         | `/api/user/login`         | POST   | email, password                         | `{'message': 'User login successful', 'token': token}` | 200    | `{'error': 'Invalid credentials'}` | 400    |
+| Instructor login   | `/api/instructor/login`   | POST   | email, password                         | `{'message': 'User login successful', 'token': token}` | 200    | `{'error': 'Invalid credentials'}` | 401    |
+| User registration  | `/api/user/register`      | POST   | name, email, gender, phone, password    | `{'message': 'User registered successfully', 'token': token}` | 200    | `{'error': 'User exists'}`       | 401    |
+| Instructor login   | `/api/instructor/register` | POST   | name, email, gender, phone, password    | `{'message': 'User registered successfully', 'token': token}` | 200    | `{'error': 'User exists'}`       | 401    |
+
 
 ### What the endpoints do
 
