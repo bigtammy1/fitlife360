@@ -4,33 +4,37 @@ from models.classes import Class
 from models import storage
 from views import app_views
 from flask import abort, jsonify, make_response, request
+from utils import get_id_by_token
 
 
-
-@app_views.route('/classess', methods=['GET'], strict_slashes=False)
-def get_classess():
+@app_views.route('/classes', methods=['GET'], strict_slashes=False)
+def get_classes():
     """
     Retrieves the list of all classes objects
     or a specific classes
     """
-    all_classess = storage.all(Class).values()
-    list_classess = []
-    for classes in all_classess:
-        list_classess.append(classes.to_dict())
-    return jsonify(list_classess)
+    all_classes = storage.all(Class).values()
+    list_classes = []
+    for classes in all_classes:
+        list_classes.append(classes.to_dict())
+    return jsonify(list_classes)
 
 
-@app_views.route('/classess/<classes_id>', methods=['GET'], strict_slashes=False)
-def get_classes(classes_id):
+@app_views.route('/class', methods=['GET'], strict_slashes=False)
+def get_classes():
     """ Retrieves an classes """
-    classes = storage.get(Class, classes_id)
+    try:
+        id = get_id_by_token('User')
+    except KeyError as e:
+        abort(401, description=e)
+    classes = storage.get(Class, id)
     if not classes:
         abort(404)
 
     return jsonify(classes.to_dict())
 
 
-@app_views.route('/classess/<classes_id>', methods=['DELETE'],
+@app_views.route('/class', methods=['DELETE'],
                  strict_slashes=False)
 def delete_classes(classes_id):
     """
@@ -48,8 +52,8 @@ def delete_classes(classes_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/classess', methods=['POST'], strict_slashes=False)
-def post_classes():
+@app_views.route('/class', methods=['POST'], strict_slashes=False)
+def post_class():
     """
     Creates a classes
     """
@@ -67,12 +71,12 @@ def post_classes():
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/classess/<classes_id>', methods=['PUT'], strict_slashes=False)
-def put_classes(classes_id):
+@app_views.route('/class', methods=['PUT'], strict_slashes=False)
+def put_classes():
     """
     Updates a classes
     """
-    classes = storage.get(Class, classes_id)
+    classes = storage.get(Class, id)
 
     if not classes:
         abort(404)

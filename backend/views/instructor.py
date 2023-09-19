@@ -4,7 +4,7 @@ from models.instructor import Instructor
 from models import storage
 from views import app_views
 from flask import abort, jsonify, make_response, request
-
+from utils import get_id_by_token
 
 
 @app_views.route('/instructors', methods=['GET'], strict_slashes=False)
@@ -13,6 +13,14 @@ def get_instructors():
     Retrieves the list of all instructor objects
     or a specific instructor
     """
+    try:
+        id = get_id_by_token('Instructor')
+    except KeyError as e:
+        abort(401, description=e)
+
+    instructor = storage.get(Instructor, id)
+    if not instructor:
+        abort(403)
     all_instructors = storage.all(Instructor).values()
     list_instructors = []
     for instructor in all_instructors:
@@ -20,35 +28,40 @@ def get_instructors():
     return jsonify(list_instructors)
 
 
-@app_views.route('/instructors/<instructor_id>', methods=['GET'], strict_slashes=False)
-def get_instructor(instructor_id):
+@app_views.route('/instructor', methods=['GET'], strict_slashes=False)
+def get_instructor():
     """ Retrieves an instructor """
-    instructor = storage.get(Instructor, instructor_id)
+    try:
+        id = get_id_by_token('Instructor')
+    except KeyError as e:
+        abort(401, description=e)
+
+    instructor = storage.get(Instructor, id)
     if not instructor:
         abort(404)
-
     return jsonify(instructor.to_dict())
 
 
-@app_views.route('/instructors/<instructor_id>', methods=['DELETE'],
+@app_views.route('/instructor', methods=['DELETE'],
                  strict_slashes=False)
-def delete_instructor(instructor_id):
+def delete_instructor():
     """
     Deletes a instructor Object
     """
+    try:
+        id = get_id_by_token('Instructor')
+    except KeyError as e:
+        abort(401, description=e)
 
-    instructor = storage.get(Instructor, instructor_id)
-
+    instructor = storage.get(Instructor, id)
     if not instructor:
         abort(404)
-
     storage.delete(instructor)
     storage.save()
-
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/instructors', methods=['POST'], strict_slashes=False)
+@app_views.route('/create/instructors', methods=['POST'], strict_slashes=False)
 def post_instructor():
     """
     Creates a instructor
@@ -67,12 +80,17 @@ def post_instructor():
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/instructors/<instructor_id>', methods=['PUT'], strict_slashes=False)
-def put_instructor(instructor_id):
+@app_views.route('/instructor', methods=['PUT'], strict_slashes=False)
+def put_instructor():
     """
     Updates a instructor
     """
-    instructor = storage.get(Instructor, instructor_id)
+    try:
+        id = get_id_by_token('Instructor')
+    except KeyError as e:
+        abort(401, description=e)
+
+    instructor = storage.get(Instructor, id)
 
     if not instructor:
         abort(404)

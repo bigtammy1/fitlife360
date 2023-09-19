@@ -33,6 +33,15 @@ it should have these order and keys: `name, email, gender, phone, password`.
 - `api/instructor/register` - instructor login
     email and password
 
+example url: `https://fitlife360-backend.onrender.com/api/user/login`
+
+Name | Endpoint | Method | Parameters | Response | Status | Failed | Status
+--- | --- | --- | --- | --- | ---
+User login | `/api/user/login` | POST | email, password | `{'message': 'User login successful', 'token': token}` | 200 | `{'error': 'Invalid credentials'}` | 400
+Instructor login | `/api/instructor/login` | POST | email, password | `{'message': 'User login successful', 'token': token}` | 200 | `{'error': 'Invalid credentials'}` | 401
+User registration | `/api/user/register` | POST | name, email, gender, phone, password | `{'message': 'User registered successfully', 'token': token}` | 200 | `{'error': 'User exists'}` | 401
+Instructor login | `/api/instructor/register` | POST | name, email, gender, phone, password | `{'message': 'User registered successfully', 'token': token}` | 200 | `{'error': 'User exists'}` | 401
+
 ### What the endpoints do
 
 - registration endpoints: They recieve data from the client, creates the user and return a json 
@@ -46,7 +55,7 @@ errors return `invalid credentials` with 401 status
 - The instruction registration form should contain password
 - The user registration does not need the height and weight of the user yet, we can ask for that in their profile
 - All requests a user can make to the backend should have their token in their header like so
-`curl -XPUT 0.0.0.0:5000/files/5f1e879ec7ba06511e683b22/unpublish -H "X-Token: <token>" ; echo ""`
+`curl -XPOST https://fitlife360-backend.onrender.com/api/user -H "X-Token: <token>" ; echo ""` to get a user
 this is important but it is for the other pages
 
 

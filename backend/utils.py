@@ -15,4 +15,7 @@ def get_id_by_token(u_or_i: str) -> str:
         key = f'user_{token}'
     elif u_or_i == 'Instructor':
         key = f'instructor_{token}'
-    return redis_storage.get(key)
+    id = redis_storage.get(key)
+    if not id:
+        raise KeyError('Key could not be found')
+    return id
