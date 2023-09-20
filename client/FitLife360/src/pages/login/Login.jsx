@@ -4,6 +4,7 @@ import Footer from '../../components/Footer';
 import axios from 'axios';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
+import Gym from '../../assets/gym3.jpg';
 
 const url = import.meta.env.VITE_BACKEND_URL
 
@@ -99,6 +100,7 @@ const Login = ({login, token, setToken, setLogin, setTrainerOrTrainee, setUserna
               </button>
             </form>
           </div>
+          <img className='w-[500px] h-[400px] mx-auto my-4' src={Gym} alt='/' />
         </div>
         {errorMessage && (
             <p className="text-red-500 mt-2">{errorMessage}</p>
