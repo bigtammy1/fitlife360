@@ -6,49 +6,63 @@ import {
   FaInstagram,
   FaTwitterSquare,
 } from 'react-icons/fa';
-import Logo from '../assets/logo.png'
+import Logo from '../assets/logo.png';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
-    <div className='w-full bg-black font-font2 '>
-        <div className='w-full py-6 text-white px-4'>
-      <div className='max-w-[1240px] mx-auto grid gap-16 lg:grid-cols-3'>
-        <div className='lg:col-span-2 my-4'>
-        
-        
-        <img src={Logo} className='w-100 h-24'/>
-    
-        <p className='py-4 text-justify'>FitLife360 is designed to empower individuals on their journey to improved well-being. It offers a holistic approach to health, providing personalized exercise recommendations and progress monitoring. Whether your goal is weight management, muscle gain or staying fit, FitLife360 offers the required guidance.</p>
-        <div className='flex justify-between md:w-[60%] my-6'>
-            <FaFacebookSquare size={30} />
-            <FaInstagram size={30} />
-            <FaTwitterSquare size={30} />
-            <FaGithubSquare size={30} />
-            <FaDribbbleSquare size={30} />
-        </div>
+    <div className='w-full bg-[#416982] font-font2 '>
+      <div className='w-full py-6 text-white px-4'>
+        <div className='max-w-[1240px] mx-auto flex flex-col space-y-3'>
+          <div className='my-4'>
+          <img src={Logo} className='w-100 h-10'/>
       
-        </div>
-        <div className='my-4'>
-        <h1 className='md:text-4xl sm:text-3xl text-2xl font-bold font-font1 py-2'>
-            Want tips & tricks to optimize your flow?
-          </h1>
-          <p className='mb-3'>Join our newsletter for valuable tips and stay in the fitness loop!</p>
-          <div className='flex flex-col sm:flex-row items-center justify-between w-full'>
-            <input
-              className='p-3 flex w-full rounded-md text-black'
-              type='email'
-              placeholder='Enter Email'
-            />
-            <button className='bg-primary text-white rounded-md font-medium w-full md:w-[200px] ml-4 my-6 px-6 py-3'>
-              Notify Me
-            </button>
+          {/* <p className='py-4 text-justify'>FitLife360 is designed to empower individuals on their journey to improved well-being. It offers a holistic approach to health, providing personalized exercise recommendations and progress monitoring. Whether your goal is weight management, muscle gain or staying fit, FitLife360 offers the required guidance.</p> */}
+          {/*  */}
+        
           </div>
-          <p>
-            We care about the protection of your data. Read our{' '}
-            <span className='text-primary cursor-pointer'>Privacy Policy.</span>
-          </p>
+          <div className='flex justify-between flex-wrap'>
+            <div>
+              <div className='flex justify-evenly flex-wrap mt-8'>
+                <Link to="/about" className='mx-4'>About</Link>
+                <Link to="/career" className='mx-4'>Careers</Link>
+                <Link to="/customer" className='mx-4'>Customer Care</Link>
+                <Link to="/services" className='mx-4'>Services</Link>
+              </div>
+              <div className='flex justify-around md:w-[60%] my-6'>
+                <FaFacebookSquare size={25} />
+                <FaInstagram size={25} />
+                <FaTwitterSquare size={25} />
+                <FaGithubSquare size={25} />
+                <FaDribbbleSquare size={25} />
+              </div>
+            </div>
+            <div className='my-4'>
+              <h3 className='md:text-xl sm:text-xl text-sm font-bold font-font1 py-2'>
+                  Want tips & tricks to optimize your flow?
+              </h3>
+              <p className='mb-3'>Join our newsletter for valuable tips and stay in the fitness loop!</p>
+              <div className='flex flex-col sm:flex-row items-center justify-between w-full'>
+                <input
+                  className='p-2 outline-none flex w-full rounded-md text-black'
+                  type='email'
+                  placeholder='Enter Email'
+                />
+                <button className='bg-primary text-white rounded-md font-medium w-full md:w-[200px] ml-4 my-6 px-5 py-2'>
+                  Notify Me
+                </button>
+              </div>
+              <p className='text-sm'>
+                We care about the protection of your data. Read our{' '}
+                <span className='text-primary cursor-pointer'>Privacy Policy.</span>
+              </p>
+            </div>
+          </div>
+          <div className=' border-b border-slate-400'></div>
+          <div>
+            <p className='float-right text-xs'>&copy; FitLife360 2023. All rights reserved</p>
+          </div>
         </div>
-      </div>
     </div>
         
     </div>

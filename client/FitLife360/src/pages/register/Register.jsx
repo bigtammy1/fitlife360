@@ -1,13 +1,11 @@
 import React from 'react'
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Footer from '../../components/Footer';
 import { Link } from 'react-router-dom';
-import Gym from '../assets/gym1.jpg';
+import Gym from '../../assets/gym1.jpg';
 
 const Register = () => {
   return (
     <>
-    <Navbar />
     <div className='w-full bg-white py-16 px-4'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2 gap-8'>
         <img className='w-[500px] mx-auto my-4' src={Gym} alt='/' />

@@ -1,10 +1,14 @@
 import React from 'react'
 import { Outlet } from "react-router-dom";
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
-const TrainerLayout = () => {
+const TrainerLayout = ({login, setLogin}) => {
   return (
-    <div>TrainerLayout
+    <div>
+      <Navbar login={login} setLogin={setLogin} />
         <Outlet />
+      <Footer/>
     </div>
   )
 }

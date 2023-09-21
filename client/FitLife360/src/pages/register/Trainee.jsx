@@ -1,26 +1,44 @@
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import Gym from '../assets/gym4.jpg';
+import Gym from '../../assets/gym4.jpg';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
-import { AiOutlineUser, AiOutlinePhone, AiOutlineRise} from 'react-icons/ai';
-import { FaWeight } from 'react-icons/fa'
+import { AiOutlineUser, AiOutlinePhone} from 'react-icons/ai';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const Trainee = () => {
-  const [formData, setFormData] = useState({
-    fullName: '',
+
+const Trainee = ({setLogin}) => {
+  const initialState = {
+    name: '',
     email: '',
     password: '',
     gender: '',
-    phoneNumber: '',
-    height: '',
-    weight: '',
-  });
-
-  const handleSubmit = (e) => {
+    phoneNumber: ''
+  }
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState(initialState);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const url = import.meta.env.VITE_BACKEND_URL
+  
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your form submission logic here
-    console.log('Form data submitted:', formData);
+    await axios.post(`${url}/api/user/register`, formData, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        console.log(response.data);
+        setSuccessMessage(response.data.message);
+        setLogin(true);
+        window.localStorage.setItem('token', response.data.token);
+        setFormData(initialState);
+        navigate('/user');
+      })
+      .catch(error => {
+        console.error('Error:', error.response.data);
+        setErrorMessage(error.response.data.error);
+      });
   };
 
   const handleChange = (e) => {
@@ -33,10 +51,15 @@ const Trainee = () => {
 
   return (
     <>
-      <Navbar />
       <div className='w-full bg-white py-16 px-4'>
         <div className='max-w-[1240px] mx-auto flex flex-col-reverse gap-8 md:flex-row md:items-center'>
           <div className='md:w-1/2 border-2 border-primary rounded-md font-font2 p-4'>
+          {successMessage && (
+        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+          <strong className="font-bold">Success!</strong>
+          <span className="block sm:inline">{successMessage}</span>
+        </div>
+      )}
             <h1 className='md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary'>
               Trainee Registration
             </h1>
@@ -46,9 +69,9 @@ const Trainee = () => {
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
                   type="text"
-                  name="fullName"
+                  name="name"
                   placeholder="Full Name"
-                  value={formData.fullName}
+                  value={formData.name}
                   onChange={handleChange}
                 />
               </div>
@@ -96,7 +119,7 @@ const Trainee = () => {
                   onChange={handleChange}
                 />
               </div>
-              <div className="relative mb-4">
+              {/* <div className="relative mb-4">
                 <AiOutlineRise className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
@@ -117,7 +140,7 @@ const Trainee = () => {
                   value={formData.weight}
                   onChange={handleChange}
                 />
-              </div>
+              </div> */}
               <button
                 type="submit"
                 className="mt-2 p-3 w-full rounded-md bg-primary text-white hover:bg-primary-dark"
@@ -125,13 +148,15 @@ const Trainee = () => {
                 Register
               </button>
             </form>
+            {errorMessage && (
+          <p className="text-red-500 mt-2">{errorMessage}</p>
+        )}
           </div>
           <div className='hidden md:block md:w-1/2'>
             <img className='w-[400px] h-[400px] mx-auto my-4' src={Gym} alt='Gym' />
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

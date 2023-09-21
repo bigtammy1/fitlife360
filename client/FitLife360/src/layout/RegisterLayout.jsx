@@ -1,16 +1,16 @@
 import React from 'react'
+import { Outlet } from "react-router-dom";
 import Navbar from '../components/Navbar';
-import Hero from '../components/Hero';
 import Footer from '../components/Footer';
 
-export const Home = ({login, setLogin}) => {
+const RegisterLayout = ({login, setLogin}) => {
   return (
-    <>
+    <div>
       <Navbar login={login} setLogin={setLogin} />
-      <Hero />
-      <Footer />
-    </>
+        <Outlet />
+      <Footer/>
+    </div>
   )
 }
 
-export default Home;
+export default RegisterLayout
