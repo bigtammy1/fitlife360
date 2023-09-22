@@ -1,28 +1,30 @@
 import React, { useState } from 'react';
-import Gym from '../../assets/gym4.jpg';
-import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
-import { AiOutlineUser, AiOutlinePhone} from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
+import Gym from '../../assets/gym1.jpg';
+import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
+import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import axios from 'axios';
 
-
-const Trainee = ({setLogin}) => {
+const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
   const initialState = {
     name: '',
     email: '',
-    password: '',
     gender: '',
-    phoneNumber: ''
+    phone: '',
+    password: '',
+    confPassword: ''
   }
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const [formData, setFormData] = useState(initialState);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const url = import.meta.env.VITE_BACKEND_URL
-  
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`${url}/api/user/register`, formData, {
+    formData.gender.toLowerCase()
+    await axios.post(`${url}/api/register`, formData, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -31,9 +33,10 @@ const Trainee = ({setLogin}) => {
         console.log(response.data);
         setSuccessMessage(response.data.message);
         setLogin(true);
-        window.localStorage.setItem('token', response.data.token);
+        setAuthToken(response.data.token);
+        setUsername(response.data.name)
         setFormData(initialState);
-        navigate('/user');
+        navigate('/register/role');
       })
       .catch(error => {
         console.error('Error:', error.response.data);
@@ -52,16 +55,21 @@ const Trainee = ({setLogin}) => {
   return (
     <>
       <div className='w-full bg-white py-16 px-4'>
-        <div className='max-w-[1240px] mx-auto flex flex-col-reverse gap-8 md:flex-row md:items-center'>
+        <div className='max-w-[1240px] mx-auto flex flex-col gap-8 md:flex-row md:items-center'>
+          <div className='hidden md:block md:w-1/2'>
+            <img className='w-[400px] h-[400px] mx-auto my-4' src={Gym} alt='Gym' />
+          </div>
           <div className='md:w-1/2 border-2 border-primary rounded-md font-font2 p-4'>
-          {successMessage && (
+            <div>
+            {successMessage && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
           <strong className="font-bold">Success!</strong>
           <span className="block sm:inline">{successMessage}</span>
         </div>
       )}
+            </div>
             <h1 className='md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary'>
-              Trainee Registration
+              Trainer Registration
             </h1>
             <form onSubmit={handleSubmit}>
               <div className="relative mb-4">
@@ -87,6 +95,28 @@ const Trainee = ({setLogin}) => {
                 />
               </div>
               <div className="relative mb-4">
+                <input
+                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
+                  type="text"
+                  name="gender"
+                  placeholder="Gender"
+                  value={formData.gender}
+                  onChange={handleChange}
+                />
+                <AiOutlineUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              </div>
+              <div className="relative mb-4">
+                <AiOutlinePhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone Number"
+                  value={formData.phone}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="relative mb-4">
                 <HiOutlineLockClosed className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
@@ -98,49 +128,16 @@ const Trainee = ({setLogin}) => {
                 />
               </div>
               <div className="relative mb-4">
+                <HiOutlineLockClosed className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="text"
-                  name="gender"
-                  placeholder="Enter Gender"
-                  value={formData.gender}
-                  onChange={handleChange}
-                />
-                <AiOutlineUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-              </div>
-              <div className="relative mb-4">
-                <AiOutlinePhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="tel"
-                  name="phoneNumber"
-                  placeholder="Phone Number"
-                  value={formData.phoneNumber}
+                  type="password"
+                  name="confPassword"
+                  placeholder="Confirm Password"
+                  value={formData.confPassword}
                   onChange={handleChange}
                 />
               </div>
-              {/* <div className="relative mb-4">
-                <AiOutlineRise className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="text"
-                  name="height"
-                  placeholder="Height"
-                  value={formData.height}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="relative mb-4">
-                <FaWeight className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="text"
-                  name="weight"
-                  placeholder="Weight"
-                  value={formData.weight}
-                  onChange={handleChange}
-                />
-              </div> */}
               <button
                 type="submit"
                 className="mt-2 p-3 w-full rounded-md bg-primary text-white hover:bg-primary-dark"
@@ -149,16 +146,14 @@ const Trainee = ({setLogin}) => {
               </button>
             </form>
             {errorMessage && (
-          <p className="text-red-500 mt-2">{errorMessage}</p>
-        )}
+              <p className="text-red-500 mt-2">{errorMessage}</p>
+            )}
           </div>
-          <div className='hidden md:block md:w-1/2'>
-            <img className='w-[400px] h-[400px] mx-auto my-4' src={Gym} alt='Gym' />
-          </div>
+          
         </div>
       </div>
     </>
   );
 };
 
-export default Trainee;
+export default RegisterUser;
