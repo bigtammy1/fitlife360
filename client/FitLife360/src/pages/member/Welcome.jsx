@@ -1,9 +1,9 @@
 import React from 'react'
 
-const WelcomeTrainer = () => {
+const WelcomeMember = () => {
   return (
     <div className='mt-30'>Welcome</div>
   )
 }
 
-export default WelcomeTrainer;
+export default WelcomeMember;

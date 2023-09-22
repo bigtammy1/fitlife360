@@ -5,24 +5,30 @@ import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import axios from 'axios';
 
-const TrainerProfile = ({setTrainerOrTrainee, setLogin}) => {
-  const initialState = {
-    name: '',
-    email: '',
-    gender: '',
-    phone: '',
-    password: '',
-  }
+const MemberProfile = ({setLogin, authToken}) => {
+
   const navigate = useNavigate()
-  const [formData, setFormData] = useState(initialState);
+  const [formData, setFormData] = useState({});
+  const [picture, setPicture] = useState(null);
+  const [weight, setWeight] = useState('');
+  const [height, setHeight] = useState('');
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+
   const url = import.meta.env.VITE_BACKEND_URL
+
+  const profileData = {
+    picture,
+    weight,
+    height,
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`${url}/api/instructor/register`, formData, {
+    await axios.post(`${url}/api/instructor/register`, profileData, {
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': authToken,
       }
     })
       .then(response => {
@@ -64,7 +70,7 @@ const TrainerProfile = ({setTrainerOrTrainee, setLogin}) => {
       )}
             </div>
             <h1 className='md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary'>
-              Trainer Registration
+              Member Registration
             </h1>
             <form onSubmit={handleSubmit}>
               <div className="relative mb-4">
@@ -139,4 +145,4 @@ const TrainerProfile = ({setTrainerOrTrainee, setLogin}) => {
   );
 };
 
-export default TrainerProfile;
+export default MemberProfile;

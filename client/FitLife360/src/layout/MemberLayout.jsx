@@ -3,14 +3,14 @@ import { Outlet } from "react-router-dom";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const TrainerLayout = ({login, setLogin, token}) => {
+const MemberLayout = ({login, token, setLogin}) => {
   return (
     <div>
-      <Navbar login={login} setLogin={setLogin} token={token} />
+      <Navbar login={login} token={token} setLogin={setLogin} />
         <Outlet />
       <Footer/>
     </div>
   )
 }
 
-export default TrainerLayout
+export default MemberLayout;

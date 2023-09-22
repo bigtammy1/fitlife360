@@ -1,17 +1,35 @@
 import React, { useState } from 'react';
 import Logo from '../assets/logo.png';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const Navbar = ({login, setLogin}) => {
+const url = import.meta.env.VITE_BACKEND_URL
+
+const Navbar = ({login, setLogin, token}) => {
   const [nav, setNav] = useState(false);
-
+  const navigate = useNavigate();
   const toggleNav = () => {
     setNav(!nav);
   };
-  const logout = () => {
+  const logout = async () => {
     // handle logout
-    setLogin(false)
+    console.log(token)
+    await axios.post(`${url}/api/logout`, null, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      }
+    })
+      .then(response => {
+        console.log(response.data);
+        localStorage.clear()
+        setLogin(false);
+        navigate('/', {replace: true});
+      })
+      .catch(error => {
+        console.error('Error:', error.response.data);
+      });
   }
 
   return (
@@ -35,7 +53,7 @@ const Navbar = ({login, setLogin}) => {
           {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </div>
 
-        <div className={nav ? 'absolute left-0 top-24 w-[60%] h-full border-r border-r-gray-900 bg-primary ease-in-out duration-500' : 'fixed left-[-100%]'}>
+        <div className={nav ? 'absolute z-10 left-0 top-24 w-[60%] h-full border-r border-r-gray-900 bg-primary ease-in-out duration-500' : 'fixed left-[-100%]'}>
           <ul className='p-3 cursor-pointer font-font1'>
             <li className='p-6 border-b border-gray-400'><Link to="/">Home</Link></li>
             <li className='p-6 border-b border-gray-400'><Link to="/trainers">Trainers</Link></li>
