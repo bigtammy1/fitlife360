@@ -35,7 +35,7 @@ const Navbar = ({login, setLogin}) => {
           {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </div>
 
-        <div className={nav ? 'absolute left-0 top-24 w-[60%] h-full border-r border-r-gray-900 bg-primary ease-in-out duration-500' : 'fixed left-[-100%]'}>
+        <div className={nav ? 'absolute z-10 left-0 top-24 w-[60%] h-full border-r border-r-gray-900 bg-primary ease-in-out duration-500' : 'fixed left-[-100%]'}>
           <ul className='p-3 cursor-pointer font-font1'>
             <li className='p-6 border-b border-gray-400'><Link to="/">Home</Link></li>
             <li className='p-6 border-b border-gray-400'><Link to="/trainers">Trainers</Link></li>

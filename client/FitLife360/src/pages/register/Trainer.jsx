@@ -12,26 +12,30 @@ const Trainer = ({setTrainerOrTrainee, setLogin}) => {
     gender: '',
     phone: '',
     password: '',
+    confPassword: '',
   }
   const navigate = useNavigate()
   const [formData, setFormData] = useState(initialState);
-  const [successMessage, setSuccessMessage] = useState(null);
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const url = import.meta.env.VITE_BACKEND_URL
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (formData.confPassword !== formData.password) {
+      setErrorMessage('Passwords do not match')
+    }
     await axios.post(`${url}/api/instructor/register`, formData, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
       .then(response => {
-        console.log(response.data);
-        setSuccessMessage(response.data.message);
-        setLogin(true);
-        window.localStorage.setItem('token', response.data.token);
-        setFormData(initialState);
-        navigate('/user');
+        console.log(response);
+        // setSuccessMessage(response.data.message);
+        // setLogin(true);
+        // window.localStorage.setItem('token', response.data.token);
+        // setFormData(initialState);
+        // navigate('/user');
       })
       .catch(error => {
         console.error('Error:', error.response.data);
@@ -122,18 +126,31 @@ const Trainer = ({setTrainerOrTrainee, setLogin}) => {
                   onChange={handleChange}
                 />
               </div>
+              <div className="relative mb-4">
+                <HiOutlineLockClosed className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
+                  type="password"
+                  name="confPassword"
+                  placeholder="Confirm Password"
+                  value={formData.confPassword}
+                  onChange={handleChange}
+                />
+              </div>
               <button
                 type="submit"
                 className="mt-2 p-3 w-full rounded-md bg-primary text-white hover:bg-primary-dark"
               >
                 Register
               </button>
-            </form>
-          </div>
-          {errorMessage && (
+              {errorMessage && (
           <p className="text-red-500 mt-2">{errorMessage}</p>
         )}
-        </div>
+            </form>
+          </div>
+          </div>
+          
+        
       </div>
     </>
   );
