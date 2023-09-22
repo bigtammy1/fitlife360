@@ -27,6 +27,7 @@ class UserProfile(BaseModel):
     gender = column_property(User.gender)
     phone = column_property(User.phone)
     picture = Column(String(255))
+    parent = relationship("User", backref="member_profile")
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     weight = Column(Float)
     height = Column(Float)

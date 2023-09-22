@@ -17,6 +17,7 @@ class TrainerProfile(BaseModel):
     name = column_property(User.name)
     gender = column_property(User.gender)
     phone = column_property(User.phone)
+    instructor = relationship("User", backref="trainer")
     user_id = Column(String(255), ForeignKey('users.id'), nullable=False)
     picture = Column(String(255))
     bio = Column(String(350))

@@ -56,7 +56,7 @@ errors return `invalid credentials` with 401 status
 - The instruction registration form should contain password
 - The user registration does not need the height and weight of the user yet, we can ask for that in their profile
 - All requests a user can make to the backend should have their token in their header like so
-`curl -XPOST https://fitlife360-backend.onrender.com/api/user -H "X-Token: <token>" ; echo ""` to get a user
+`curl -XPOST https://fitlife360-backend.onrender.com/api/user -H "Authorization: <token>" ; echo ""` to get a user
 this is important but it is for the other pages
 
 

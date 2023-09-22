@@ -52,6 +52,7 @@ def user_register() -> str:
     user = storage.get_by(User, 'email', email)
     if user:
         return make_response(jsonify({'error': 'User exists'}), 401)
+    gender = gender.lower()
     kwargs = {
         'name': name,
         'email': email,
@@ -165,9 +166,10 @@ def create_member() -> str:
 @app_views.route('/logout', strict_slashes=False, methods=['POST'])
 def logout():
     """logs out the user and delete the token on redis"""
-    token = request.headers.get('X-token')
+    token = request.headers.get('Authorization')
     try:
         id = get_id_by_token()
+        print(id)
         if id:
             redis_storage.delete(token)
             return make_response(jsonify({'message': 'Logged out successfully'}), 201)
