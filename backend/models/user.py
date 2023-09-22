@@ -9,10 +9,7 @@ from sqlalchemy import CheckConstraint, Column, ForeignKey, String, Float, Table
 from sqlalchemy.orm import relationship
 from hashlib import md5
 
-user_classes = Table('user_classes', Base.metadata,
-                     Column('user_id', String(60), ForeignKey('users.id')),
-                     Column('class_id', String(60), ForeignKey('classes.id'))
-                     )
+
 
 
 class User(BaseModel):
@@ -21,16 +18,15 @@ class User(BaseModel):
     email = Column(String(128), nullable=False, unique=True)
     password = Column(String(128), nullable=False)
     name = Column(String(128), nullable=True)
-    picture = Column(String(255))
-    gender = Column(String(60), CheckConstraint(
-        "gender in ('male', 'female')"), nullable=False)
     phone = Column(String(20))
-    weight = Column(Float)
-    height = Column(Float)
-    classes = relationship(
-        'Class',
-        secondary=user_classes,
-        back_populates='users')
+    gender = Column(String(60), CheckConstraint(
+        "gender IN ('male', 'female')"), nullable=False)
+    
+    role = Column(String(50), CheckConstraint(
+        "role IN ('member', 'trainer', 'admin' )"))
+    user_profile = relationship('UserProfile', backref='user')
+    trainer_profile = relationship('TrainerProfile', backref='user')
+    
 
     def __init__(self, *args, **kwargs):
         """initializes user"""
