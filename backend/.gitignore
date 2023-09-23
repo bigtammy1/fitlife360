@@ -9,3 +9,5 @@ redis-7.2.1/
 alembic/
 dump.rdb
 .vscode
+a.db
+alembic.ini
