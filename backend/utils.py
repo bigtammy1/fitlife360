@@ -17,7 +17,7 @@ def get_id_by_token() -> str:
     """get id from header token
     Return: id of the trainer or user
     """
-    token = request.headers.get('X-token')
+    token = request.headers.get('Authorization')
     if not token:
         abort(401, description='Missing token')
     id = redis_storage.get(token)

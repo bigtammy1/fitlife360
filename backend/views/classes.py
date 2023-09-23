@@ -103,7 +103,7 @@ def put_class(class_id):
     """
     Updates a classes
     """
-    token = request.headers.get('X-token')
+    token = request.headers.get('Authorization')
     if token.split('_')[0] not in ['trainer', 'admin']:
         abort(401)
     try:
