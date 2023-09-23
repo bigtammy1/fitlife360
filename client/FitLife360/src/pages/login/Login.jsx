@@ -66,7 +66,7 @@ const Login = ({login, token, setToken, setLogin, setTrainerOrTrainee, setUserna
         <div className='max-w-[1240px] mx-auto flex flex-col-reverse gap-8 md:flex-row items-center'>
           <div className='w-[80%] md:w-1/2 border-2 border-primary rounded-md font-font2 p-4'>
             <h1 className='md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary'>
-              Login as Trainee
+              Welcome back, please login to continue
             </h1>
             <form onSubmit={handleUserSubmit}>
               <div className="relative mb-4">

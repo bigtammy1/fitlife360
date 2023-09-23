@@ -69,7 +69,7 @@ const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
       )}
             </div>
             <h1 className='md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary'>
-              Trainer Registration
+              Registration
             </h1>
             <form onSubmit={handleSubmit}>
               <div className="relative mb-4">

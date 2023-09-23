@@ -5,7 +5,7 @@ import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import axios from 'axios';
 
-const MemberProfile = ({setLogin, authToken}) => {
+const MemberProfile = ({setLogin, token}) => {
 
   const navigate = useNavigate()
   const [formData, setFormData] = useState({});
@@ -28,7 +28,7 @@ const MemberProfile = ({setLogin, authToken}) => {
     await axios.post(`${url}/api/instructor/register`, profileData, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': authToken,
+        'Authorization': token,
       }
     })
       .then(response => {
@@ -36,7 +36,7 @@ const MemberProfile = ({setLogin, authToken}) => {
         setSuccessMessage(response.data.message);
         setLogin(true);
         window.localStorage.setItem('token', response.data.token);
-        setFormData(initialState);
+        setFormData({});
         navigate('/user');
       })
       .catch(error => {
@@ -74,13 +74,14 @@ const MemberProfile = ({setLogin, authToken}) => {
             </h1>
             <form onSubmit={handleSubmit}>
               <div className="relative mb-4">
+                <label htmlFor="picture">Profile picture</label>
                 <AiOutlineUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="text"
-                  name="name"
-                  placeholder="Full Name"
-                  value={formData.name}
+                  type="file"
+                  name="picture"
+                  placeholder="Profile picture"
+                  value={formData.picture}
                   onChange={handleChange}
                 />
               </div>
@@ -88,9 +89,9 @@ const MemberProfile = ({setLogin, authToken}) => {
                 <HiOutlineMail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="email"
-                  name="email"
-                  placeholder="Enter Email"
+                  type="number"
+                  name="weight"
+                  placeholder="Input your weight"
                   value={formData.email}
                   onChange={handleChange}
                 />
@@ -98,10 +99,10 @@ const MemberProfile = ({setLogin, authToken}) => {
               <div className="relative mb-4">
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="text"
-                  name="gender"
+                  type=''
+                  name="age"
                   placeholder="Gender"
-                  value={formData.gender}
+                  value={formData.age}
                   onChange={handleChange}
                 />
                 <AiOutlineUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />

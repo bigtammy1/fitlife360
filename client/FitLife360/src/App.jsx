@@ -75,7 +75,7 @@ function App() {
         <Route path="/register" element={<RegisterLayout token={token} login={login} setLogin={setLogin}/>} >
           <Route index element={<RegisterUser setLogin={setLogin} setAuthToken={setAuthToken} setUsername={setUsername} />} />
           <Route path='role' element={<Register authToken={authToken} username={username} setToken={setToken} />} />
-          <Route path="member" element={<MemberProfile />} />
+          <Route path="member" element={<MemberProfile setLogin={setLogin} token={token} />} />
           <Route path="trainer" element={<TrainerProfile setTrainerOrTrainee={setTrainerOrTrainee} />} />
           <Route path="*" element={<NotFound />} />
         </Route> 
