@@ -26,11 +26,11 @@ it should always have a prefix `/api/`
 ### list of Api endpoints
 The data you send should be in json format
 - `api/user/register` - user registration
-- `api/instructor/register` - gym instructor registration
+- `api/trainer/register` - gym trainer registration
 it should have these order and keys: `name, email, gender, phone, password`.
 
 - `api/user/login` - user login
-- `api/instructor/register` - instructor login
+- `api/trainer/register` - trainer login
     email and password
 
 example url: `https://fitlife360-backend.onrender.com/api/user/login`
@@ -38,9 +38,9 @@ example url: `https://fitlife360-backend.onrender.com/api/user/login`
 | Name               | Endpoint                  | Method | Parameters                              | Response                                       | Status | Failed                  | Status |
 | ------------------ | ------------------------- | ------ | --------------------------------------- | ---------------------------------------------- | ------ | ----------------------- | ------ |
 | User login         | `/api/user/login`         | POST   | email, password                         | `{'message': 'User login successful', 'token': token}` | 200    | `{'error': 'Invalid credentials'}` | 400    |
-| Instructor login   | `/api/instructor/login`   | POST   | email, password                         | `{'message': 'User login successful', 'token': token}` | 200    | `{'error': 'Invalid credentials'}` | 401    |
+| trainer login   | `/api/trainer/login`   | POST   | email, password                         | `{'message': 'User login successful', 'token': token}` | 200    | `{'error': 'Invalid credentials'}` | 401    |
 | User registration  | `/api/user/register`      | POST   | name, email, gender, phone, password    | `{'message': 'User registered successfully', 'token': token}` | 200    | `{'error': 'User exists'}`       | 401    |
-| Instructor login   | `/api/instructor/register` | POST   | name, email, gender, phone, password    | `{'message': 'User registered successfully', 'token': token}` | 200    | `{'error': 'User exists'}`       | 401    |
+| trainer login   | `/api/trainer/register` | POST   | name, email, gender, phone, password    | `{'message': 'User registered successfully', 'token': token}` | 200    | `{'error': 'User exists'}`       | 401    |
 
 
 ### What the endpoints do
@@ -48,7 +48,7 @@ example url: `https://fitlife360-backend.onrender.com/api/user/login`
 - registration endpoints: They recieve data from the client, creates the user and return a json 
 `{'message': 'User created successfully', 'token': token}` with a status 201
 - login endpoints: receive a data from the client and logs the user in, returns
-`{'message': 'Instructor login successful', 'token': token}` status 200
+`{'message': 'trainer login successful', 'token': token}` status 200
 
 errors return `invalid credentials` with 401 status
 
@@ -56,7 +56,7 @@ errors return `invalid credentials` with 401 status
 - The instruction registration form should contain password
 - The user registration does not need the height and weight of the user yet, we can ask for that in their profile
 - All requests a user can make to the backend should have their token in their header like so
-`curl -XPOST https://fitlife360-backend.onrender.com/api/user -H "X-Token: <token>" ; echo ""` to get a user
+`curl -XPOST https://fitlife360-backend.onrender.com/api/user -H "Authorization: <token>" ; echo ""` to get a user
 this is important but it is for the other pages
 
 

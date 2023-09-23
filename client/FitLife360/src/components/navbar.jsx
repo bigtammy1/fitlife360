@@ -1,17 +1,35 @@
 import React, { useState } from 'react';
 import Logo from '../assets/logo.png';
 import { AiOutlineClose, AiOutlineMenu } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const Navbar = ({login, setLogin}) => {
+const url = import.meta.env.VITE_BACKEND_URL
+
+const Navbar = ({login, setLogin, token}) => {
   const [nav, setNav] = useState(false);
-
+  const navigate = useNavigate();
   const toggleNav = () => {
     setNav(!nav);
   };
-  const logout = () => {
+  const logout = async () => {
     // handle logout
-    setLogin(false)
+    console.log(token)
+    await axios.post(`${url}/api/logout`, null, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': token
+      }
+    })
+      .then(response => {
+        console.log(response.data);
+        localStorage.clear()
+        setLogin(false);
+        navigate('/', {replace: true});
+      })
+      .catch(error => {
+        console.error('Error:', error.response.data);
+      });
   }
 
   return (

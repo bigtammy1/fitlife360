@@ -1,5 +1,5 @@
 import React from 'react';
-import icon from '../assets/icon.png'
+import icon from '../../assets/icon.png'
 import { FaHome } from 'react-icons/fa';
 
 
