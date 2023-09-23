@@ -4,8 +4,11 @@ from models.user import User
 from models import storage
 from views import app_views
 from flask import abort, jsonify, make_response, request
-from utils import get_id_by_token
+from utils import get_id_by_token, get_user_with_pic
+import os
 
+
+file_path = '~/profile_pics/'
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
 def get_users():
@@ -38,7 +41,7 @@ def get_user():
     if not user:
         abort(404)
 
-    return jsonify(user.to_dict())
+    return jsonify(get_user_with_pic(user.id))
 
 
 @app_views.route('/user', methods=['DELETE'],
@@ -93,7 +96,7 @@ def put_user():
     user = storage.get(User, id)
 
     if not user:
-        abort(404)
+        abort(404, description='User not found')
 
     if not request.get_json():
         abort(400, description="Not a JSON")
@@ -101,8 +104,22 @@ def put_user():
     ignore = ['id', 'email', 'created_at', 'updated_at']
 
     data = request.get_json()
+    picture = data.get('picture')
     for key, value in data.items():
         if key not in ignore:
             setattr(user, key, value)
+    # handle file upload
+    if picture:
+        # convert base64 string to file
+        file_data = picture.split(',')[1]
+        file_name = picture.split(',')[0].split(':')[1].split(';')[0]
+        with open(os.path.join(file_path, file_name), 'wb') as f:
+            f.write(file_data.decode('base64'))
+        # save link to file in user model
+        user.profile = os.path.join(file_path, file_name)
     storage.save()
-    return make_response(jsonify(user.to_dict()), 200)
+    try:
+        user_with_pic = get_user_with_pic(User, user.id)
+    except ValueError:
+        user_with_pic = user.to_dict()
+    return make_response(jsonify(user_with_pic), 200)

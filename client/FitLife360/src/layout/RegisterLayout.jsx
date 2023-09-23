@@ -3,10 +3,10 @@ import { Outlet } from "react-router-dom";
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
-const RegisterLayout = ({login, setLogin}) => {
+const RegisterLayout = ({login, setLogin, token}) => {
   return (
     <div>
-      <Navbar login={login} setLogin={setLogin} />
+      <Navbar login={login} token={token} setLogin={setLogin} />
         <Outlet />
       <Footer/>
     </div>

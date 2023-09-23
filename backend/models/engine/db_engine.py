@@ -7,13 +7,20 @@ import models
 from models.base import Base
 from models.classes import Class
 from models.user import User
-from models.instructor import Instructor
+from models.trainer_profile import TrainerProfile
+from models.user_profile import UserProfile
+from models.goal import Goal
+from models.exercise import Exercise
+from models.workout import WorkoutPlan
 from os import getenv
-import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from dotenv import load_dotenv
-classes = {"Class": Class, "Instructor": Instructor, 'User': User }
+
+classes = {"Class": Class, "trainer": TrainerProfile,
+           'User': User, 'UserProfile': UserProfile,
+           'Goal': Goal, 'Exercise': Exercise,
+           'WorkoutPlan': WorkoutPlan }
 load_dotenv()
 
 class DBStorage:
@@ -29,12 +36,12 @@ class DBStorage:
         MYSQL_DB = getenv('MYSQL_DB')
         
         # if you do not have mysql on your machine, use this (development)
-        # self.__engine = create_engine("sqlite:///a.db", echo=False)
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
-                                      format(MYSQL_USER,
-                                             MYSQL_PWD,
-                                             MYSQL_HOST,
-                                             MYSQL_DB))
+        self.__engine = create_engine("sqlite:///a.db", echo=False)
+        # self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.
+        #                               format(MYSQL_USER,
+        #                                      MYSQL_PWD,
+        #                                      MYSQL_HOST,
+        #                                      MYSQL_DB))
 
     def all(self, cls=None):
         """query on the current database session"""
@@ -62,6 +69,7 @@ class DBStorage:
 
     def reload(self):
         """reloads data from the database"""
+        Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)

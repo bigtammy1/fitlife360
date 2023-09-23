@@ -5,6 +5,6 @@ app_views = Blueprint(
     url_prefix='/api')
 
 from .user import *
-from .instructor import *
+from .trainer import *
 from .auth import *
 from .classes import *

@@ -3,58 +3,56 @@
 from flask import request, abort, jsonify, make_response
 from views import app_views
 from models import storage, redis_storage
-from models.instructor import Instructor
+from models.trainer_profile import TrainerProfile
+from models.user_profile import UserProfile
 from models.user import User
 from hashlib import md5
-from uuid import uuid4
-from os import getenv
+from utils import (
+    get_id_by_token, generate_token,
+    set_redis_key, save_profile_picture)
 
 
-def generate_token() -> str:
-    """generate uuid token"""
-    return str(uuid4())
-
-
-user_expiration = getenv('USER_EXPIRATION')
-ins_expiration = getenv('INS_EXPIRATION')
-
-
-@app_views.route('/user/login', methods=['POST', 'GET'], strict_slashes=False)
-def user_login() -> str:
+# Login
+@app_views.route('/login', methods=['POST', 'GET'], strict_slashes=False)
+def login() -> str:
     """User login"""
     data = request.get_json()
     if not data:
         return make_response(jsonify({'error': 'Not a json'}), 401)
     email = data.get('email')
     password = data.get('password')
-    if not email:
-        return make_response(jsonify({'error': 'Missing email'}), 401)
-    if not password:
-        return make_response(jsonify({'error': 'Missing passwword'}), 401)
+    if not email or not password:
+        return make_response(jsonify({'error': 'Missing credentials'}), 401)
     # get the user
     user = storage.get_by(User, 'email', email)
     if not user:
-        return make_response(jsonify({'error': 'Invalid credentials'}), 401)
+        return make_response(jsonify({'error': 'User does not exist'}), 401)
     if user.password != md5(password.encode()).hexdigest():
         return make_response(jsonify({'error': 'Invalid credentials'}), 401)
     token = generate_token()
-    key = f'user_{token}'
-    redis_storage.set(key, user.id, user_expiration)
+    key, expiration = set_redis_key(user, token)
+    redis_storage.set(key, user.id, expiration)
     return make_response(
-        jsonify({'message': 'User login successful', 'token': token}), 200)
+        jsonify({'message': 'User login successful',
+                 'token': key, 'name': user.name}), 200)
 
 
-@app_views.route('/user/register', methods=['POST'], strict_slashes=False)
+@app_views.route('/register', methods=['POST'], strict_slashes=False)
 def user_register() -> str:
     """User registration"""
     data = request.get_json()
-    name, email, gender, phone, password = data.values()
+    name = data.get('name')
+    email = data.get('email')
+    gender = data.get('gender')
+    phone = data.get('phone')
+    password = data.get('password')
     if not name or not email or not gender or not password or not phone:
         return make_response(jsonify({'error': 'Missing credentials'}), 401)
     # check for user
     user = storage.get_by(User, 'email', email)
     if user:
         return make_response(jsonify({'error': 'User exists'}), 401)
+    gender = gender.lower()
     kwargs = {
         'name': name,
         'email': email,
@@ -64,64 +62,118 @@ def user_register() -> str:
     }
     user = User(**kwargs)
     user.save()
-    token = generate_token()
-    key = f'user_{token}'
-    redis_storage.set(key, user.id, user_expiration)
+    key = f'auth_{generate_token()}'
+    redis_storage.set(key, user.id, 1000)
     return make_response(
-        jsonify({'message': 'User created successfully', 'token': token}), 201)
+        jsonify({'message': 'User created successfully',
+                 'name': user.name, 'token': key}), 201)
 
 
-# instructor authentication
-@app_views.route('/instructor/login',
-                 methods=['POST', 'GET'], strict_slashes=False)
-def instructor_login() -> str:
-    """Instructor login"""
+@app_views.route('/role', methods=['POST'], strict_slashes=False)
+def roles():
+    """sets user role to trainer or member"""
+    data = request.get_json()
+    if not data:
+        abort(401)
+    roles = data.get('role')
+    if roles not in ['member', 'trainer', 'admin']:
+        abort(401)
+    try:
+        id = get_id_by_token()
+        user = storage.get(User, id)
+        if not user:
+            abort(401)
+    except KeyError:
+        abort(401)
+    if roles == 'member':
+        user.role = 'member'
+    elif roles == 'trainer':
+        user.role = 'trainer'
+    user.save()
+    token = generate_token()
+    key, expiration = set_redis_key(user, token)
+    redis_storage.set(key, user.id, expiration)
+    return make_response(
+        jsonify({'message': 'User role successful',
+                 'token': key}), 201)
+
+
+
+# trainer creation
+@app_views.route('/trainer/create_profile',
+                 methods=['POST'], strict_slashes=False)
+def create_trainer() -> str:
+    """trainer profile creation"""
     data = request.get_json()
     if not data:
         return make_response(jsonify({'error': 'Not a json'}), 401)
-    email = data.get('email')
-    password = data.get('password')
-    if not email:
-        return make_response(jsonify({'error': 'Missing email'}), 401)
-    if not password:
-        return make_response(jsonify({'error': 'Missing passwword'}), 401)
-    # get the user
-    instructor = storage.get_by(Instructor, 'email', email)
-    if not instructor:
-        return make_response(jsonify({'error': 'Invalid credentials'}), 401)
-    if instructor.password != md5(password.encode()).hexdigest():
-        return make_response(jsonify({'error': 'Invalid credentials'}), 401)
-    token = generate_token()
-    key = f'instructor_{token}'
-    redis_storage.set(key, instructor.id, ins_expiration)
-    return make_response(
-        jsonify({'message': 'Instructor login successful', 'token': token}), 200)
-
-
-@app_views.route('/instructor/register',
-                 methods=['POST'], strict_slashes=False)
-def instructor_register() -> str:
-    """User login"""
-    """User registration"""
-    data = request.get_json()
-    name, email, gender, phone, password = data.values()
-    if not name or not email or not gender or not password or not phone:
-        return make_response(jsonify({'error': 'Missing credentials'}), 401)
-    # check for instructor
-    instructor = storage.get_by(Instructor, 'email', email)
-    if instructor:
-        return make_response(jsonify({'error': 'User exists'}), 401)
+    try:
+        id = get_id_by_token()
+    except KeyError:
+        abort(401, description='No user id found')
+    user = storage.get(User, id)
+    if not user:
+        abort(401, description="No user found")
+    picture = request.files['picture']
+    picture_url = save_profile_picture(picture)
     kwargs = {
-        'name': name,
-        'email': email,
-        'gender': gender,
-        'phone': phone,
-        'password': password,
+        'user_id': user.id,
+        'picture': picture_url,
+        'bio': data.get('bio'),
+        'approach': data.get('approach'),
+        'specializations': data.get('specializations'),
+        'experience': data.get('experience'),
     }
-    instructor = Instructor(**kwargs)
-    instructor.save()
-    token = generate_token()
-    key = f'user_{token}'
-    redis_storage.set(key, instructor.id, ins_expiration)
+    profile = TrainerProfile(**kwargs)
+    profile.save()
+    setattr(user, 'trainer_profile', profile)
+    storage.save() 
     return make_response(
-        jsonify({'message': 'User created successfully', 'token': token}), 201)
+        jsonify({'message': 'Trainer profile creation successful'}), 201)
+
+
+# trainer creation
+@app_views.route('/member/create_profile',
+                 methods=['POST'], strict_slashes=False)
+def create_member() -> str:
+    """Member profile"""
+    data = request.get_json()
+    if not data:
+        return make_response(jsonify({'error': 'Not a json'}), 401)
+    try:
+        id = get_id_by_token()
+    except KeyError:
+        abort(401, description='No user id found')
+    user = storage.get(User, id)
+    if not user:
+        abort(401, description="No user found")
+    picture = request.files['picture']
+    picture_url = save_profile_picture(picture)
+    kwargs = {
+        'user_id': user.id,
+        'picture': picture_url,
+        'weight': data.get('weight'),
+        'height': data.get('height'),
+    }
+    profile = UserProfile(**kwargs)
+    profile.save()
+    setattr(user, 'trainer_profile', profile)
+    storage.save() 
+    return make_response(
+        jsonify({'message': 'Member profile creation successful'}), 201)
+
+
+@app_views.route('/logout', strict_slashes=False, methods=['POST'])
+def logout():
+    """logs out the user and delete the token on redis"""
+    token = request.headers.get('Authorization')
+    try:
+        id = get_id_by_token()
+        print(id)
+        if id:
+            redis_storage.delete(token)
+            return make_response(jsonify({'message': 'Logged out successfully'}), 201)
+        else:
+            abort(403)
+    except KeyError:
+        abort(401)

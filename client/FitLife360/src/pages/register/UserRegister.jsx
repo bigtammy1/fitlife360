@@ -5,37 +5,38 @@ import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import axios from 'axios';
 
-const TrainerProfile = ({setTrainerOrTrainee, setLogin}) => {
+const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
   const initialState = {
     name: '',
     email: '',
     gender: '',
     phone: '',
     password: '',
-    confPassword: '',
+    confPassword: ''
   }
   const navigate = useNavigate()
   const [formData, setFormData] = useState(initialState);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const url = import.meta.env.VITE_BACKEND_URL
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.confPassword !== formData.password) {
-      setErrorMessage('Passwords do not match')
-    }
-    await axios.post(`${url}/api/instructor/register`, formData, {
+    formData.gender.toLowerCase()
+    await axios.post(`${url}/api/register`, formData, {
       headers: {
         'Content-Type': 'application/json'
       }
     })
       .then(response => {
-        console.log(response);
-        // setSuccessMessage(response.data.message);
-        // setLogin(true);
-        // window.localStorage.setItem('token', response.data.token);
-        // setFormData(initialState);
-        // navigate('/user');
+        console.log(response.data);
+        setSuccessMessage(response.data.message);
+        setLogin(true);
+        setAuthToken(response.data.token);
+        setUsername(response.data.name)
+        setFormData(initialState);
+        navigate('/register/role');
       })
       .catch(error => {
         console.error('Error:', error.response.data);
@@ -68,7 +69,7 @@ const TrainerProfile = ({setTrainerOrTrainee, setLogin}) => {
       )}
             </div>
             <h1 className='md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary'>
-              Trainer Registration
+              Registration
             </h1>
             <form onSubmit={handleSubmit}>
               <div className="relative mb-4">
@@ -143,17 +144,16 @@ const TrainerProfile = ({setTrainerOrTrainee, setLogin}) => {
               >
                 Register
               </button>
-              {errorMessage && (
-          <p className="text-red-500 mt-2">{errorMessage}</p>
-        )}
             </form>
-          </div>
+            {errorMessage && (
+              <p className="text-red-500 mt-2">{errorMessage}</p>
+            )}
           </div>
           
-        
+        </div>
       </div>
     </>
   );
 };
 
-export default TrainerProfile;
+export default RegisterUser;
