@@ -23,7 +23,7 @@ class TrainerProfile(BaseModel):
     picture = Column(String(255))
     bio = Column(String(350))
     approach = Column(String(255))
-    specializations = Column(String())
+    specializations = Column(String(1000))
     experience = Column(Float)
     classes = relationship("Class", backref="trainer")
 
