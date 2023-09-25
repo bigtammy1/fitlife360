@@ -19,7 +19,7 @@ const Register = ({ authToken, username, setToken }) => {
       .then(res => {
         const data = res.data
         setToken(data.token)
-        navigate('/trainer')
+        navigate('/register/trainer')
       })
       .catch(err => console.error(err));
   }
@@ -35,7 +35,7 @@ const Register = ({ authToken, username, setToken }) => {
       .then(res => {
         const data = res.data;
         setToken(data.token);
-        navigate('/member')
+        navigate('/register/member')
       })
       .catch(err => console.error(err));
   }

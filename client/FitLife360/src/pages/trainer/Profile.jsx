@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FaPhone, FaPen, FaArrowRight, FaMailBulk } from 'react-icons/fa';
 import gym from '../../assets/gym4.jpg'
-const Profile = ({trainerOrTrainee}) => {
+const Profile = ({trainer}) => {
 
   const fitnessClasses = [
     {
@@ -53,12 +53,21 @@ const Profile = ({trainerOrTrainee}) => {
   const [classes, setClasses] = useState(fitnessClasses)
   return (
     <div className='bg-primary'>
-      <div className='flex-col-reverse sm:flex-row flex justify-between items-center mb-5'>
-        <div className='w-full my-8 flex items-start ml-3 sm:w-[50%] h-full text-center flex-col text-2xl font-bold'>
-          <div><h1>{name}</h1></div>
-          <div className='text-sm'>{bio}</div>
+      <div className="relative flex justify-between items-center mb-5">
+      <div className="w-full my-8 flex items-start ml-3 sm:w-[50%] h-full text-center space-x-5 m-7 text-2xl font-bold">
+        <div className="w-20 h-20">
+          <img
+            src={picture}
+            alt={name}
+            className="w-full h-full object-cover rounded-full border-4 border-white"
+          />
+        </div>  
+        <div>
+          <h2>{name}</h2>
         </div>
-        <div className='w-full sm:w-[50%] h-full'><img src={picture} alt={name} /></div>
+      </div>
+
+        
       </div>
       <div className='bg-secondary flex justify-evenly my-5 py-10'>
         <div className=' border-x border-footer bg-footer space-y-3 text-white flex flex-col justify-center shadow-sm rounded-bl-lg rounded-tr-lg min-h-40 max-h-fit w-1/4'>
@@ -100,7 +109,7 @@ const Profile = ({trainerOrTrainee}) => {
               </div>
               <div className='flex justify-center pb-4'>
               {
-                trainerOrTrainee === 'Trainer' ? <button className='bg-primary px-8 py-2 text-white flex rounded-full justify-center hover:bg-footer'>Edit Class<FaPen size={15} className='m-1' /></button> : <button className='bg-primary px-8 py-2 text-white flex rounded-full justify-center hover:bg-footer'>
+                trainer === 'Trainer' ? <button className='bg-primary px-8 py-2 text-white flex rounded-full justify-center hover:bg-footer'>Edit Class<FaPen size={15} className='m-1' /></button> : <button className='bg-primary px-8 py-2 text-white flex rounded-full justify-center hover:bg-footer'>
                     Book Class <FaArrowRight size={15} className='m-1'/>
                   </button> 
               }
