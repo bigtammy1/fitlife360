@@ -1,14 +1,21 @@
-import React from 'react'
+import React from 'react';
 import { Outlet } from "react-router-dom";
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import Sidenav from '../components/Sidenav';
 
-const MemberLayout = ({login, token, setLogin}) => {
+
+
+
+
+const MemberLayout = ({login, setLogin, token}) => {
+  
+ 
   return (
-    <div>
-      <Navbar login={login} token={token} setLogin={setLogin} />
-        <Outlet />
-      <Footer/>
+    <div className='flex h-screen'>
+      <Sidenav login={login} setLogin={setLogin} token={token}/>
+      
+      <div className='flex-1 h-screen overflow-y-auto'>
+      <Outlet />
+      </div>
     </div>
   )
 }

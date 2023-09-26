@@ -35,10 +35,17 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
         const role = response.data.token.split('_')[0];
         setToken(response.data.token);
         setFormData(initialState);
-        if (role === 'member') navigate('/member');
-        else if (role === 'trainer') {
-          setTrainer('Trainer')
-          navigate('/trainer')}
+        console.log('Role:', role);
+        if (role === 'member') {
+          console.log('Navigating to /member');
+          console.log('Role:', role);
+          navigate('/member');
+        } else if (role === 'admin') {
+          console.log('Navigating to /trainer');
+          setTrainer('Trainer');
+          console.log('Role:', role);
+          navigate('/trainer');
+        }
       })
       .catch(error => {
         console.error('Error:', error.response.data);
@@ -64,6 +71,12 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
             <span className="block sm:inline">{successMessage}</span>
           </div>
         )}
+        {errorMessage && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <span className="block sm:inline">{errorMessage}</span>
+          </div>
+        )}
+      
         <div className='max-w-[1240px] mx-auto flex flex-col-reverse gap-8 md:flex-row items-center'>
           <div className='w-[80%] md:w-1/2 border-2 border-primary rounded-md font-font2 p-4'>
             <h1 className='md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary'>
@@ -102,9 +115,7 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
           </div>
           <img className='w-[500px] h-[400px] mx-auto my-4' src={Gym} alt='/' />
         </div>
-        {errorMessage && (
-            <p className="text-red-500 mt-2">{errorMessage}</p>
-          )}
+       
       </div>
       <Footer />
     </>

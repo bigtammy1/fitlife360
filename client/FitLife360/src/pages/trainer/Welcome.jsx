@@ -33,7 +33,7 @@ const WelcomeTrainer = ({ username }) => {
           />
         </div>
       ) : (
-        <h1 className="font-bold text-3xl">Welcome {username}</h1>
+        <h1 className="font-bold font-font1 text-3xl">Welcome {username}</h1>
       )}
     </div>
   );

@@ -14,6 +14,9 @@ import MemberProfile from './pages/register/Member';
 // trainer profile
 import WelcomeTrainer from './pages/trainer/Welcome';
 import Profile from './pages/trainer/Profile';
+import Message from './pages/trainer/Message';
+import Schedule from './pages/trainer/Schedule';
+import Clients from './pages/trainer/Clients';
 import Layout from "./layout/TrainerLayout";
 // member profile
 import MemberLayout from './layout/MemberLayout';
@@ -76,6 +79,9 @@ function App() {
         <Route path="/trainer" element={<Layout token={token} login={login} setLogin={setLogin} />}>
           <Route index element={<WelcomeTrainer username={userName} />} />
           <Route path="profile" element={<Profile trainer={trainer} />} />
+          <Route path="messages" element={<Message trainer={trainer} />} />
+          <Route path="schedule" element={<Schedule trainer={trainer} />} />
+          <Route path="clients" element={<Clients trainer={trainer} />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
