@@ -8,8 +8,8 @@ from models.user_profile import UserProfile
 from models.user import User
 from hashlib import md5
 from utils import (
-    get_id_by_token, generate_token,
-    set_redis_key, save_profile_picture)
+    get_id_by_token, generate_token, save_base64_image,
+    set_redis_key)
 
 
 # Login
@@ -114,15 +114,18 @@ def create_trainer() -> str:
     user = storage.get(User, id)
     if not user:
         abort(401, description="No user found")
-    picture = request.files['picture']
-    picture_url = save_profile_picture(picture)
+    picture_base64 = data.get('picture', '')   
+    if not picture_base64:
+        abort(400, description="No picture provided")
+    picture_url = save_base64_image(picture_base64, user.id)
     kwargs = {
-        'user_id': user.id,
+        'user_id': id,
         'picture': picture_url,
         'bio': data.get('bio'),
-        'approach': data.get('approach'),
+        'approaches': data.get('approach'),
         'specializations': data.get('specializations'),
         'experience': data.get('experience'),
+        'age': data.get('age')
     }
     profile = TrainerProfile(**kwargs)
     profile.save()
@@ -142,22 +145,27 @@ def create_member() -> str:
         return make_response(jsonify({'error': 'Not a json'}), 401)
     try:
         id = get_id_by_token()
+        print(id)
     except KeyError:
-        abort(401, description='No user id found')
+        return make_response(jsonify({'error': 'user id not found'}), 401)
     user = storage.get(User, id)
     if not user:
-        abort(401, description="No user found")
-    picture = request.files['picture']
-    picture_url = save_profile_picture(picture)
+        return make_response(jsonify({'error': 'user not found'}), 401)
+    picture_base64 = data.get('picture', '')   
+    if not picture_base64:
+        # abort(401)
+        return make_response(jsonify({'error': 'picture not found'}), 400)
+    picture_url = save_base64_image(picture_base64, user.id)
     kwargs = {
-        'user_id': user.id,
+        'user_id': id,
         'picture': picture_url,
         'weight': data.get('weight'),
         'height': data.get('height'),
+        'age': data.get('age'),
     }
     profile = UserProfile(**kwargs)
     profile.save()
-    setattr(user, 'trainer_profile', profile)
+    user.user_profile = profile
     storage.save() 
     return make_response(
         jsonify({'message': 'Member profile creation successful'}), 201)

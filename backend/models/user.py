@@ -1,15 +1,10 @@
 #!/usr/bin/python3
 """ User model"""
 
-import models
-from models.base import BaseModel, Base
-from os import getenv
-import sqlalchemy
-from sqlalchemy import CheckConstraint, Column, ForeignKey, String, Float, Table
+from models.base import BaseModel
+from sqlalchemy import CheckConstraint, Column, String
 from sqlalchemy.orm import relationship
 from hashlib import md5
-
-
 
 
 class User(BaseModel):
@@ -24,8 +19,8 @@ class User(BaseModel):
     
     role = Column(String(50), CheckConstraint(
         "role IN ('member', 'trainer', 'admin' )"))
-    user_profile = relationship('UserProfile', backref='user')
-    trainer_profile = relationship('TrainerProfile', backref='user')
+    user_profile = relationship('UserProfile', backref='user', uselist=False)
+    trainer_profile = relationship('TrainerProfile', backref='user', uselist=False)
     
 
     def __init__(self, *args, **kwargs):

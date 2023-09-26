@@ -1,43 +1,61 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Gym from '../../assets/gym1.jpg';
-import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
+import { HiOutlineMail } from 'react-icons/hi';
 import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import axios from 'axios';
 
-const MemberProfile = ({setLogin, token}) => {
+const MemberProfile = ({ setLogin, token }) => {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-  const [formData, setFormData] = useState({});
-  const [picture, setPicture] = useState(null);
-  const [weight, setWeight] = useState('');
-  const [height, setHeight] = useState('');
+  // Initialize form state with default values
+  const [formData, setFormData] = useState({
+    picture: null,
+    weight: '',
+    height: '',
+    age: '',
+  });
+
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const url = import.meta.env.VITE_BACKEND_URL
+  const url = import.meta.env.VITE_BACKEND_URL;
 
-  const profileData = {
-    picture,
-    weight,
-    height,
+  const handlePictureChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setFormData({
+          ...formData,
+          picture: reader.result, // Store the base64-encoded image data
+        });
+      };
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post(`${url}/api/instructor/register`, profileData, {
+    console.log(formData)
+    console.log(token)
+    await axios.post(`${url}/api/member/create_profile`, formData, {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': token,
+        'Authorization': token
       }
     })
       .then(response => {
         console.log(response.data);
         setSuccessMessage(response.data.message);
         setLogin(true);
-        window.localStorage.setItem('token', response.data.token);
-        setFormData({});
-        navigate('/user');
+        setFormData({
+        picture: null,
+        weight: '',
+        height: '',
+        age: '',
+      });
+        navigate('/member');
       })
       .catch(error => {
         console.error('Error:', error.response.data);
@@ -55,21 +73,28 @@ const MemberProfile = ({setLogin, token}) => {
 
   return (
     <>
-      <div className='w-full bg-white py-16 px-4'>
-        <div className='max-w-[1240px] mx-auto flex flex-col gap-8 md:flex-row md:items-center'>
-          <div className='hidden md:block md:w-1/2'>
-            <img className='w-[400px] h-[400px] mx-auto my-4' src={Gym} alt='Gym' />
+      <div className="w-full bg-white py-16 px-4">
+        <div className="max-w-[1240px] mx-auto flex flex-col gap-8 md:flex-row md:items-center">
+          <div className="hidden md:block md:w-1/2">
+            <img
+              className="w-[400px] h-[400px] mx-auto my-4"
+              src={Gym}
+              alt="Gym"
+            />
           </div>
-          <div className='md:w-1/2 border-2 border-primary rounded-md font-font2 p-4'>
+          <div className="md:w-1/2 border-2 border-primary rounded-md font-font2 p-4">
             <div>
-            {successMessage && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-          <strong className="font-bold">Success!</strong>
-          <span className="block sm:inline">{successMessage}</span>
-        </div>
-      )}
+              {successMessage && (
+                <div
+                  className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative"
+                  role="alert"
+                >
+                  <strong className="font-bold">Success!</strong>
+                  <span className="block sm:inline">{successMessage}</span>
+                </div>
+              )}
             </div>
-            <h1 className='md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary'>
+            <h1 className="md:text-4xl sm:text-3xl text-2xl text-center font-bold py-2 font-font1 text-primary">
               Member Registration
             </h1>
             <form onSubmit={handleSubmit}>
@@ -79,10 +104,9 @@ const MemberProfile = ({setLogin, token}) => {
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
                   type="file"
+                  accept="image/*" // Accept only image files
                   name="picture"
-                  placeholder="Profile picture"
-                  value={formData.picture}
-                  onChange={handleChange}
+                  onChange={handlePictureChange}
                 />
               </div>
               <div className="relative mb-4">
@@ -91,18 +115,18 @@ const MemberProfile = ({setLogin, token}) => {
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
                   type="number"
                   name="weight"
-                  placeholder="Input your weight"
-                  value={formData.email}
+                  placeholder="Input your weight in Kilograms"
+                  value={formData.weight}
                   onChange={handleChange}
                 />
               </div>
               <div className="relative mb-4">
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type=''
-                  name="age"
-                  placeholder="Gender"
-                  value={formData.age}
+                  type="number"
+                  name="height"
+                  placeholder="Input your height in meters"
+                  value={formData.height}
                   onChange={handleChange}
                 />
                 <AiOutlineUser className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
@@ -111,21 +135,10 @@ const MemberProfile = ({setLogin, token}) => {
                 <AiOutlinePhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="relative mb-4">
-                <HiOutlineLockClosed className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                <input
-                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="password"
-                  name="password"
-                  placeholder="Enter Password"
-                  value={formData.password}
+                  type="number"
+                  name="age"
+                  placeholder="Input your age"
+                  value={formData.age}
                   onChange={handleChange}
                 />
               </div>
@@ -138,8 +151,8 @@ const MemberProfile = ({setLogin, token}) => {
             </form>
           </div>
           {errorMessage && (
-          <p className="text-red-500 mt-2">{errorMessage}</p>
-        )}
+            <p className="text-red-500 mt-2">{errorMessage}</p>
+          )}
         </div>
       </div>
     </>

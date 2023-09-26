@@ -23,9 +23,15 @@ const Navbar = ({login, setLogin, token}) => {
     })
       .then(response => {
         console.log(response.data);
-        localStorage.clear()
+        localStorage.setItem('states', JSON.stringify({
+                login: false,
+                username: '',
+                token: '',
+                trainer: ''
+              }));
         setLogin(false);
         navigate('/', {replace: true});
+        window.location.reload()
       })
       .catch(error => {
         console.error('Error:', error.response.data);

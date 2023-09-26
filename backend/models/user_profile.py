@@ -7,7 +7,6 @@ from models.user import User
 import sqlalchemy
 from sqlalchemy import Column, ForeignKey, String, Float, Table
 from sqlalchemy.orm import relationship, column_property
-from hashlib import md5
 
 
 user_classes = Table('user_classes', Base.metadata,
@@ -28,7 +27,6 @@ class UserProfile(BaseModel):
     phone = column_property(User.phone)
     age = Column(Float)
     picture = Column(String(255))
-    parent = relationship("User", backref="member_profile")
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     weight = Column(Float)
     height = Column(Float)
@@ -36,4 +34,4 @@ class UserProfile(BaseModel):
         'Class', secondary=user_classes, back_populates='class_users')
     workout_plans = relationship(
         'WorkoutPlan', secondary=user_workout_plans, back_populates='user_plans')
-    goals = relationship('Goal', backref='user')
+    goals = relationship('Goal', backref='user_profile')

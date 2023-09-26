@@ -8,7 +8,7 @@ import Gym from '../../assets/gym3.jpg';
 
 const url = import.meta.env.VITE_BACKEND_URL
 
-const Login = ({login, token, setToken, setLogin, setTrainerOrTrainee, setUsername}) => {
+const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
   const initialState = {
     email: '',
     password: '',
@@ -37,7 +37,7 @@ const Login = ({login, token, setToken, setLogin, setTrainerOrTrainee, setUserna
         setFormData(initialState);
         if (role === 'member') navigate('/member');
         else if (role === 'trainer') {
-          setTrainerOrTrainee('Trainer')
+          setTrainer('Trainer')
           navigate('/trainer')}
       })
       .catch(error => {

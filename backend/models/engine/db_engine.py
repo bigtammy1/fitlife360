@@ -6,6 +6,7 @@ Contains the class DBStorage
 import models
 from models.base import Base
 from models.classes import Class
+
 from models.user import User
 from models.trainer_profile import TrainerProfile
 from models.user_profile import UserProfile
@@ -15,9 +16,10 @@ from models.workout import WorkoutPlan
 from os import getenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.orm import joinedload
 from dotenv import load_dotenv
 
-classes = {"Class": Class, "trainer": TrainerProfile,
+classes = {"Class": Class, "TrainerProfile": TrainerProfile,
            'User': User, 'UserProfile': UserProfile,
            'Goal': Goal, 'Exercise': Exercise,
            'WorkoutPlan': WorkoutPlan }
@@ -69,7 +71,6 @@ class DBStorage:
 
     def reload(self):
         """reloads data from the database"""
-        Base.metadata.drop_all(self.__engine)
         Base.metadata.create_all(self.__engine)
         sess_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(sess_factory)
