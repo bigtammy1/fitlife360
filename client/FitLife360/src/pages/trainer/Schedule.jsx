@@ -1,7 +1,9 @@
 import React from 'react';
 import { FaCalendar, FaClock } from 'react-icons/fa';
 
-const Schedule = () => {
+const url = import.meta.env.VITE_BACKEND_URL;
+
+const Schedule = ({token}) => {
   const fitnessClasses = [
     {
       name: 'Yoga Class',

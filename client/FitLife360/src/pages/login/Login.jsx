@@ -5,6 +5,7 @@ import axios from 'axios';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
 import Gym from '../../assets/gym3.jpg';
+import { Circles } from 'react-loader-spinner'
 
 const url = import.meta.env.VITE_BACKEND_URL
 
@@ -16,12 +17,14 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
   const [formData, setFormData] = useState(initialState);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [spin, setSpin] = useState(false)
 
   const navigate = useNavigate()
   
   const handleUserSubmit = async (e) => {
     e.preventDefault();
     console.log(formData)
+    setSpin(true)
     await axios.post(`${url}/api/login`, formData, {
       headers: {
         'Content-Type': 'application/json'
@@ -40,7 +43,7 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
           console.log('Navigating to /member');
           console.log('Role:', role);
           navigate('/member');
-        } else if (role === 'admin') {
+        } else if (role === 'trainer') {
           console.log('Navigating to /trainer');
           setTrainer('Trainer');
           console.log('Role:', role);
@@ -48,6 +51,7 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
         }
       })
       .catch(error => {
+        setSpin(false)
         console.error('Error:', error.response.data);
         setErrorMessage(error.response.data.error);
       });
@@ -107,9 +111,9 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
               </div>
               <button
                 type="submit"
-                className="mt-2 p-3 w-full rounded-md bg-primary text-white hover:bg-primary-dark"
+                className="mt-2 p-3 w-full rounded-md bg-primary flex space-x-4 justify-center items-center text-white hover:bg-primary-dark"
               >
-                Login
+                <div>Login</div> <div>{spin && <Circles height={12} width={12} color='white'/>}</div>
               </button>
             </form>
           </div>

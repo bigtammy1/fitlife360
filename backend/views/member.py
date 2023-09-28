@@ -3,33 +3,33 @@
 
 from models import storage
 from models.user import User
+from models.user_profile import UserProfile
 from views import app_views
 from flask import abort, jsonify, make_response, request
-from utils import get_id_by_token, get_user_with_pic
-import os
+from utils import get_id_by_token
 
 
-@app_views.route('/users', methods=['GET'], strict_slashes=False)
-def get_users():
-    """
-    Retrieves the list of all user objects
-    or a specific user
-    """
-    try:
-        id = get_id_by_token()
-    except KeyError as e:
-        abort(401, description=e)
-    user = storage.get(User, id)
-    if not user:
-        abort(404, description="User not found")
-    all_users = storage.all(User).values()
-    list_users = []
-    for user in all_users:
-        list_users.append(user.to_dict())
-    return jsonify(list_users)
+# @app_views.route('/user_profile', methods=['GET'], strict_slashes=False)
+# def get_users():
+#     """
+#     Retrieves the list of all user objects
+#     or a specific user
+#     """
+#     try:
+#         id = get_id_by_token()
+#     except KeyError as e:
+#         abort(401, description=e)
+#     user = storage.get(User, id)
+#     if not user:
+#         abort(404, description="User not found")
+#     all_users = storage.all(User).values()
+#     list_users = []
+#     for user in all_users:
+#         list_users.append(user.to_dict())
+#     return jsonify(list_users)
 
 
-@app_views.route('/user', methods=['GET'], strict_slashes=False)
+@app_views.route('/user_profile', methods=['GET'], strict_slashes=False)
 def get_user():
     """ Retrieves an user """
     try:

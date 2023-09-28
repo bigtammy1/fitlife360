@@ -19,7 +19,7 @@ def get_trainers():
     trainer = storage.get(User, id)
     if not trainer:
         abort(403)
-    all_trainers = storage.all(TrainerProfile).values()
+    all_trainers = storage.all(User).values()
     list_trainers = []
     for trainer in all_trainers:
         list_trainers.append(trainer.to_dict())
@@ -33,10 +33,11 @@ def get_trainer():
         id = get_id_by_token()
     except KeyError as e:
         abort(401, description=e)
-    trainer = storage.get(TrainerProfile, id)
+    trainer = storage.get(User, id)
     if not trainer:
         abort(404)
-    return jsonify(trainer.to_dict())
+    profile = trainer.trainer_profile
+    return jsonify(profile.to_dict())
 
 
 @app_views.route('/trainer', methods=['DELETE'],
@@ -110,8 +111,8 @@ def put_trainer():
     return make_response(jsonify(trainer.to_dict()), 200)
 
 
-@app_views.route('/<trainer_id>/classes', methods=['GET'], strict_slashes=False)
-def get_trainer_classes(trainer_id):
+@app_views.route('/trainer/classes', methods=['GET'], strict_slashes=False)
+def get_trainer_classes():
     """get classes created by trainers"""
     classes = storage.all(Class).values()
     cls_list = []
