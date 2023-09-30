@@ -8,7 +8,7 @@ from models.user_profile import UserProfile
 from models.user import User
 from hashlib import md5
 from utils import (
-    get_id_by_token, generate_token, save_base64_image,
+    get_id_by_token, generate_token, save_image,
     set_redis_key)
 
 
@@ -104,7 +104,7 @@ def roles():
                  methods=['POST'], strict_slashes=False)
 def create_trainer() -> str:
     """trainer profile creation"""
-    data = request.get_json()
+    data = request.form
     if not data:
         return make_response(jsonify({'error': 'Not a json'}), 401)
     try:
@@ -114,10 +114,10 @@ def create_trainer() -> str:
     user = storage.get(User, id)
     if not user:
         abort(401, description="No user found")
-    picture_base64 = data.get('picture', '')   
-    if not picture_base64:
+    picture = request.files['picture']
+    if not picture:
         abort(400, description="No picture provided")
-    picture_url = save_base64_image(picture_base64, user.id)
+    picture_url = save_image(picture, user.id)
     kwargs = {
         'user_id': id,
         'picture': picture_url,
@@ -140,7 +140,7 @@ def create_trainer() -> str:
                  methods=['POST'], strict_slashes=False)
 def create_member() -> str:
     """Member profile"""
-    data = request.get_json()
+    data = request.form
     if not data:
         return make_response(jsonify({'error': 'Not a json'}), 401)
     try:
@@ -151,11 +151,11 @@ def create_member() -> str:
     user = storage.get(User, id)
     if not user:
         return make_response(jsonify({'error': 'user not found'}), 401)
-    picture_base64 = data.get('picture', '')   
-    if not picture_base64:
+    picture = request.files['picture']
+    if not picture:
         # abort(401)
         return make_response(jsonify({'error': 'picture not found'}), 400)
-    picture_url = save_base64_image(picture_base64, user.id)
+    picture_url = save_image(picture, user.id)
     kwargs = {
         'user_id': id,
         'picture': picture_url,

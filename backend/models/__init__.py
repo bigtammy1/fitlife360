@@ -4,6 +4,7 @@ from models.user_profile import UserProfile
 from models.classes import Class
 from models.workout import WorkoutPlan
 from models.exercise import Exercise
+from models.goal import Goal
 from models.base import Base
 from .engine.db_engine import DBStorage
 from .engine.redis_engine import RedisEngine

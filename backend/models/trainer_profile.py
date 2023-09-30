@@ -5,6 +5,7 @@
 from models.base import BaseModel
 from sqlalchemy import Column, String, Float, ForeignKey
 from sqlalchemy.orm import relationship, column_property
+from sqlalchemy.ext.hybrid import hybrid_property
 from .user import User
 
 
@@ -27,3 +28,22 @@ class TrainerProfile(BaseModel):
     def __init__(self, *args, **kwargs):
         """initializes user"""
         super().__init__(*args, **kwargs)
+
+    @hybrid_property
+    def name(self):
+        return self.user.name
+
+    # Setter function for the 'name' property (optional)
+    @name.setter
+    def name(self, value):
+        self.user.name = value
+
+     # Getter function for the 'phone' property
+    @hybrid_property
+    def phone(self):
+        return self.user.phone
+
+    # Setter function for the 'phone' property (optional)
+    @name.setter
+    def phone(self, value):
+        self.user.phone = value

@@ -12,6 +12,9 @@ from utils import get_id_by_token
 @app_views.route('/validate/<class_id>', methods=['GET'], strict_slashes=False)
 def validate_trainer(class_id):
     """checks if a trainer owns a class"""
+    token = request.headers.get('Authorization')
+    if token.split('_')[0] not in ['trainer', 'admin']:
+        make_response(jsonify({'error': "You are not authorized to take this action"}), 401)
     try:
         id = get_id_by_token()
     except KeyError as e:
@@ -23,7 +26,7 @@ def validate_trainer(class_id):
     if not user:
         abort(401)
     if user.trainer_profile.id != class_id:
-        abort(401, description="You are not authorized to take this action")
+        make_response(jsonify({'error': "You are not authorized to take this action"}), 401)
     else:
         return make_response(jsonify({'message': 'User can edit'}), 200)
 
@@ -84,10 +87,6 @@ def post_class():
     if not request.get_json():
         abort(400, description="Not a JSON")
 
-    if 'email' not in request.get_json():
-        abort(400, description="Missing email")
-    if 'password' not in request.get_json():
-        abort(400, description="Missing password")
     user = storage.get(User, id)
     if not user:
         abort(401)

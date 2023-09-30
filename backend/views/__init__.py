@@ -8,3 +8,5 @@ from .user import *
 from .trainer import *
 from .auth import *
 from .classes import *
+from .member import *
+from .goals import *

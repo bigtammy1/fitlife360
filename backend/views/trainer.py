@@ -7,7 +7,7 @@ from models.user import User
 from models.classes import Class
 from views import app_views
 from flask import abort, jsonify, make_response, request
-from utils import get_id_by_token
+from utils import get_id_by_token, get_user_with_pic, save_image
 
 
 @app_views.route('/trainers', methods=['GET'], strict_slashes=False)
@@ -20,10 +20,8 @@ def get_trainers():
     if not trainer:
         abort(403)
     all_trainers = storage.all(User).values()
-    list_trainers = []
-    for trainer in all_trainers:
-        list_trainers.append(trainer.to_dict())
-    return jsonify(list_trainers)
+    list_trainers = [trainer.to_dict() for trainer in all_trainers if trainer.role == 'trainer']
+    return make_response(jsonify(list_trainers), 200)
 
 
 @app_views.route('/trainer', methods=['GET'], strict_slashes=False)
@@ -32,12 +30,12 @@ def get_trainer():
     try:
         id = get_id_by_token()
     except KeyError as e:
-        abort(401, description=e)
+        return make_response(jsonify({'error': 'User not found'}), 401)
     trainer = storage.get(User, id)
     if not trainer:
         abort(404)
-    profile = trainer.trainer_profile
-    return jsonify(profile.to_dict())
+    profile_id = trainer.trainer_profile.id
+    return make_response(jsonify(get_user_with_pic(TrainerProfile, profile_id)), 200)
 
 
 @app_views.route('/trainer', methods=['DELETE'],
@@ -89,34 +87,47 @@ def put_trainer():
     Updates a trainer
     """
     try:
-        id = get_id_by_token('trainer')
+        id = get_id_by_token()
     except KeyError as e:
         abort(401, description=e)
 
-    trainer = storage.get(TrainerProfile, id)
+    trainer = storage.get(User, id)
 
     if not trainer:
         abort(404)
 
-    if not request.get_json():
-        abort(400, description="Not a JSON")
+    if not request.form:
+        abort(400, description="No form sent")
 
-    ignore = ['id', 'email', 'created_at', 'updated_at']
+    ignore = ['created_at', 'updated_at']
 
-    data = request.get_json()
+    data = request.form
     for key, value in data.items():
         if key not in ignore:
-            setattr(trainer, key, value)
+            setattr(trainer.trainer_profile, key, value)
+    picture = request.files['picture']
+    picture_url = save_image(picture, trainer.trainer_profile.id)
+    trainer.trainer_profile.picture = picture_url
     storage.save()
-    return make_response(jsonify(trainer.to_dict()), 200)
+    return make_response(jsonify({'message': 'update successful'}), 201)
 
 
 @app_views.route('/trainer/classes', methods=['GET'], strict_slashes=False)
 def get_trainer_classes():
     """get classes created by trainers"""
     classes = storage.all(Class).values()
+    try:
+        id = get_id_by_token()
+    except KeyError as e:
+        abort(401, description=e)
+
+    trainer = storage.get(User, id)
+
+    if not trainer:
+        abort(404)
+    profile = trainer.trainer_profile
     cls_list = []
     for cls in classes:
-        if cls.trainer_id == trainer_id:
+        if cls.trainer_id == profile.id:
             cls_list.append(cls.to_dict())
     return make_response(jsonify(cls_list), 200)
