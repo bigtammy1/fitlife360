@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import { GrAdd } from 'react-icons/gr';
-import { FaTrashAlt } from 'react-icons/fa';
+import { FaTrashAlt, FaBirthdayCake } from 'react-icons/fa';
 import { LiaTimesSolid } from 'react-icons/lia';
 import {HiOutlineLockClosed} from 'react-icons/hi';
 import axios from 'axios';
@@ -155,6 +155,7 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
                   type="file"
                   accept="image/*" // Accept only image files
                   name="picture"
+                  required
                   onChange={handlePictureChange}
                 />
               </div>
@@ -215,6 +216,7 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
                       type="text"
                       name='approach'
                       placeholder={`Enter approach #${index + 1}`}
+                      required
                       value={approach}
                       onChange={(e) => handleApproachChange(index, e.target.value)}
                     />
@@ -229,7 +231,7 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
                 ))}
                 <button
                   type="button"
-                  className="mt-2 p-2 rounded-full bg-green-500 text-white"
+                  className="mt-2 p-3 w-1/3 rounded-md bg-primary text-white"
                   onClick={addApproachInput}
                 >
                   Add Approach
@@ -237,11 +239,12 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
               </div>
               <div className="relative mb-4">
                 <label htmlFor='age'>Age</label>
-                <AiOutlinePhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <FaBirthdayCake className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
                   type="number"
                   name="age"
+                  required
                   placeholder="Input your age"
                   value={formData.age}
                   onChange={handleChange}
@@ -254,6 +257,7 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
                   type="number"
                   name="experience"
+                  required
                   placeholder="Your experience in years"
                   value={formData.experience}
                   onChange={handleChange}

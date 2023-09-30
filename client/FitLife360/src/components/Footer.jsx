@@ -14,14 +14,13 @@ const Footer = () => {
     <div className='w-full bg-[#416982] font-font2 '>
       <div className='w-full py-6 text-white px-4'>
         <div className='max-w-[1240px] mx-auto flex flex-col space-y-3'>
+         
+          <div className='flex justify-between flex-wrap'>
           <div className='my-4'>
-          <img src={Logo} className='w-100 h-10'/>
+          <img src={Logo} className='w-100 h-20'/>
       
-          {/* <p className='py-4 text-justify'>FitLife360 is designed to empower individuals on their journey to improved well-being. It offers a holistic approach to health, providing personalized exercise recommendations and progress monitoring. Whether your goal is weight management, muscle gain or staying fit, FitLife360 offers the required guidance.</p> */}
-          {/*  */}
         
           </div>
-          <div className='flex justify-between flex-wrap'>
             <div>
               <div className='flex justify-evenly flex-wrap mt-8'>
                 <Link to="/about" className='mx-4'>About</Link>
@@ -54,7 +53,7 @@ const Footer = () => {
               </div>
               <p className='text-sm'>
                 We care about the protection of your data. Read our{' '}
-                <span className='text-primary cursor-pointer'>Privacy Policy.</span>
+                <span className='text-white-100 font-bold cursor-pointer'>Privacy Policy.</span>
               </p>
             </div>
           </div>

@@ -12,10 +12,10 @@ const Navbar = ({login, setLogin, token, setToken}) => {
   const toggleNav = () => {
     setNav(!nav);
   };
-  console.log(login)
+  // console.log(login)
   const logout = async () => {
     // handle logout
-    console.log(token)
+    // console.log(token)
     await axios.post(`${url}/api/logout`, null, {
       headers: {
         'Content-Type': 'application/json',
@@ -23,7 +23,7 @@ const Navbar = ({login, setLogin, token, setToken}) => {
       }
     })
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         localStorage.clear();
         setLogin(false);
         setToken('');
