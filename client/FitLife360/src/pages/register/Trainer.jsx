@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AiOutlineUser } from 'react-icons/ai';
+import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import { GrAdd } from 'react-icons/gr';
 import { FaTrashAlt } from 'react-icons/fa';
 import { LiaTimesSolid } from 'react-icons/lia';
@@ -31,14 +31,10 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
   const handlePictureChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setFormData({
-          ...formData,
-          picture: reader.result, // Store the base64-encoded image data
-        });
-      };
+      setFormData({
+        ...formData,
+        picture: file, // Store the image data
+      });
     }
   };
 
@@ -97,7 +93,7 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const requestData = {
       picture: formData.picture,
       age: formData.age,
@@ -107,32 +103,33 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
       experience: formData.experience,
     };
     console.log(requestData);
-    await axios
-      .post(`${url}/api/trainer/create_profile`, requestData, {
+  
+    try {
+      const response = await axios.post(`${url}/api/trainer/create_profile`, requestData, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
           'Authorization': token,
         },
-      })
-      .then((response) => {
-        console.log(response.data);
-        setSuccessMessage(response.data.message);
-        setLogin(true);
-        setFormData({
-          picture: null,
-          age: '',
-          bio: '',
-          specializations: [],
-          experience: '',
-        });
-        setApproaches(['']); // Reset to one empty approach input
-        navigate('/trainer');
-      })
-      .catch((error) => {
-        console.error('Error:', error.response.data);
-        setErrorMessage(error.response.data.error);
       });
+  
+      console.log(response.data);
+      setSuccessMessage(response.data.message);
+      setLogin(true);
+      setFormData({
+        picture: null,
+        age: '',
+        bio: '',
+        specializations: [],
+        experience: '',
+      });
+      setApproaches(['']); // Reset to one empty approach input
+      navigate('/trainer');
+    } catch (error) {
+      console.error('Error:', error.response ? error.response.data : error.message);
+      setErrorMessage(error.response ? error.response.data.error : error.message);
+    }
   };
+  
 
   return (
     <>
@@ -173,7 +170,7 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
                 />
               </div>
               <div className="relative mb-4">
-                <label>Specializations</label>
+                <label htmlFor='specialization'>Specializations</label>
                 <div className="flex flex-wrap">
                   {formData.specializations.map((specialization, index) => (
                     <div
@@ -210,12 +207,13 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
                 </div>
               </div>
               <div className="relative mb-4">
-                <label>Approaches</label>
+                <label htmlFor='approach'>Approaches</label>
                 {approaches.map((approach, index) => (
                   <div key={index} className="flex mb-2">
                     <input
                       className="pl-10 p-3 flex-1 rounded-md text-black border-2 border-primary"
                       type="text"
+                      name='approach'
                       placeholder={`Enter approach #${index + 1}`}
                       value={approach}
                       onChange={(e) => handleApproachChange(index, e.target.value)}
@@ -238,13 +236,26 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
                 </button>
               </div>
               <div className="relative mb-4">
-                <HiOutlineLockClosed className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <label htmlFor='age'>Age</label>
+                <AiOutlinePhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                 <input
                   className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
-                  type="password"
-                  name="confPassword"
-                  placeholder="Confirm Password"
-                  value={formData.confPassword}
+                  type="number"
+                  name="age"
+                  placeholder="Input your age"
+                  value={formData.age}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="relative mb-4">
+                <label htmlFor='experience'>Experience</label>
+                <AiOutlinePhone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  className="pl-10 p-3 w-full rounded-md text-black border-2 border-primary"
+                  type="number"
+                  name="experience"
+                  placeholder="Your experience in years"
+                  value={formData.experience}
                   onChange={handleChange}
                 />
               </div>

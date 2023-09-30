@@ -24,14 +24,10 @@ const MemberProfile = ({ setLogin, token }) => {
   const handlePictureChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setFormData({
-          ...formData,
-          picture: reader.result, // Store the base64-encoded image data
-        });
-      };
+      setFormData({
+        ...formData,
+        picture: file,
+      });
     }
   };
 
@@ -41,7 +37,7 @@ const MemberProfile = ({ setLogin, token }) => {
     console.log(token)
     await axios.post(`${url}/api/member/create_profile`, formData, {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multipart/form-data',
         'Authorization': token
       }
     })

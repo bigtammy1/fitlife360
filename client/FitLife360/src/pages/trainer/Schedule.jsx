@@ -1,9 +1,11 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import { FaCalendar, FaClock } from 'react-icons/fa';
 
 const url = import.meta.env.VITE_BACKEND_URL;
 
 const Schedule = ({token}) => {
+  const [classes, setClasses] = useState([])
   const fitnessClasses = [
     {
       name: 'Yoga Class',
@@ -41,13 +43,25 @@ const Schedule = ({token}) => {
       datetime: '2022-01-03T16:00:00Z'
     }
   ];
-
+  useEffect(() => {
+    axios.get(`${url}/api/trainer/classes`, {
+        headers: {
+          'Authorization': token
+        }
+      })
+      .then(res => {
+        const classes = res.data;
+        setClasses(classes)
+      })
+      .catch(err => console.error(err));
+  }, [token])
+  const data = classes.length > 1 ? classes : fitnessClasses
   return (
     <div className="bg-gray-100 min-h-screen flex items-center justify-center">
       <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 max-w-screen-md w-full">
         <h1 className="text-2xl font-semibold text-secondary font-font1 mb-4">Fitness Class Schedule</h1>
         <div className="space-y-4">
-          {fitnessClasses.map((classItem, index) => (
+          {data.map((classItem, index) => (
             <div
               key={index}
               className="border rounded-md p-4 hover:bg-gray-200 transition duration-300 flex items-center"

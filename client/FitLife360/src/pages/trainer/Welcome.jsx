@@ -11,7 +11,7 @@ const WelcomeTrainer = ({ username }) => {
     // After 5 seconds, hide the component and redirect to the profile page
     const timer = setTimeout(() => {
       setVisible(false);
-      navigate('/trainer/profile'); // Replace '/profile' with your actual profile page path
+      navigate('/trainer/profile');
     }, 5000);
 
     return () => clearTimeout(timer);
@@ -24,8 +24,8 @@ const WelcomeTrainer = ({ username }) => {
       } text-center w-screen h-screen flex items-center space-y-10 justify-center fixed inset-0 bg-white`}
     >
       {visible ? (
-        <div>
-          <h1 className="font-bold text-3xl">Welcome {username}</h1>
+        <div className='flex flex-col justify-center items-center space-y-10'>
+          <h1 className="font-bold text-3xl transition duration-200">Welcome {username}</h1>
           <ColorRing
             color="#416982" // Loader color
             height={80} // Loader height

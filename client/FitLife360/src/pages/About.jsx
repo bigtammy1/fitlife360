@@ -4,10 +4,10 @@ import Info from '../components/Info';
 import Vision from '../components/Vision';
 import Footer from '../components/Footer';
 
-const About = ({login, setLogin, token}) => {
+const About = ({login, setLogin, setToken, token}) => {
   return (
     <>
-    <Navbar login={login} token={token} setLogin={setLogin} />
+    <Navbar login={login} token={token} setToken={setToken} setLogin={setLogin} />
     <Info />
     <Vision />
     <Footer />

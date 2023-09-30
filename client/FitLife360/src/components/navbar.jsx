@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const url = import.meta.env.VITE_BACKEND_URL
 
-const Navbar = ({login, setLogin, token}) => {
+const Navbar = ({login, setLogin, token, setToken}) => {
   const [nav, setNav] = useState(false);
   const navigate = useNavigate();
   const toggleNav = () => {
@@ -23,15 +23,10 @@ const Navbar = ({login, setLogin, token}) => {
     })
       .then(response => {
         console.log(response.data);
-        localStorage.setItem('states', JSON.stringify({
-                login: false,
-                username: '',
-                token: '',
-                trainer: ''
-              }));
+        localStorage.clear();
         setLogin(false);
+        setToken('');
         navigate('/', {replace: true});
-        window.location.reload()
       })
       .catch(error => {
         console.error('Error:', error.response.data);

@@ -22,72 +22,70 @@ import Layout from "./layout/TrainerLayout";
 import MemberLayout from './layout/MemberLayout';
 import Dashboard from './pages/member/Dashboard';
 import WelcomeMember from './pages/member/Welcome';
+import MemberMessages from './pages/member/Messages';
+import MemberClasses from './pages/member/Classes';
+import Progress from './pages/member/Progress';
+import MemberWorkouts from './pages/member/Workout';
+
 
 
 function App() {
   // login details to localStorage
-  const states = JSON.parse(localStorage.getItem('states')) || {};
-  const { LOGIN, userName, Token, Trainer } = states;
   
-  const [login, setLogin] = useState(LOGIN || false);
-  const [username, setUsername] = useState(userName || '');
-  const [token, setToken] = useState(Token || '');
-  const [trainer, setTrainer] = useState(Trainer || '');
   
-
-  // const [states, setStates] = useState({})
+  const [login, setLogin] = useState(localStorage.login || false);
+  const [username, setUsername] = useState(localStorage.username || '');
+  const [token, setToken] = useState(localStorage.token || '');
+  const [trainer, setTrainer] = useState(localStorage.trainer || '');
   const [authToken, setAuthToken] = useState('');
   
   // state changes
   useEffect(() => {
-    const state = {
-      login, username, token, trainer
-    }
-    localStorage.setItem('states', JSON.stringify(state));
-  }, [login, username, token, trainer]);
-
-  
-  // useEffect(() => {
-  //   window.addEventListener('beforeunload', () => {
-  //     localStorage.setItem('states', JSON.stringify({
-  //       login,
-  //       username,
-  //       token,
-  //       trainer
-  //     }));
-  //   });
-  // }, [login, username, token, trainer]);
-  
+    localStorage.setItem('login', login);
+  }, [login]);
+  useEffect(() => {
+    localStorage.setItem('username', username);
+  }, [username]);
+  useEffect(() => {
+    localStorage.setItem('token', token);
+  }, [token]);
+  useEffect(() => {
+    localStorage.setItem('trainer', trainer);
+  }, [trainer]);
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home login={login} token={token} setLogin={setLogin} />} />
-        <Route path="/about" element={<About login={login} setLogin={setLogin}/>} />
-        <Route path="/classes" element={<Classes login={login} token={token} setLogin={setLogin}/>} />
+        <Route path="/" element={<Home login={login} token={token} setToken={setToken} setLogin={setLogin} />} />
+        <Route path="/about" element={<About login={login} setToken={setToken} setLogin={setLogin}/>} />
+        <Route path="/classes" element={<Classes login={login} token={token} setToken={setToken} setLogin={setLogin}/>} />
         <Route path="/login" element={<Login login={login} token={token} setToken={setToken} setLogin={setLogin} 
           setTrainer={setTrainer} setUsername={setUsername} />} />
         
-        <Route path="/register" element={<RegisterLayout token={token} login={login} setLogin={setLogin}/>} >
+        <Route path="/register" element={<RegisterLayout token={token} login={login} setToken={setToken} setLogin={setLogin}/>} >
           <Route index element={<RegisterUser setLogin={setLogin} setAuthToken={setAuthToken} setUsername={setUsername} />} />
           <Route path='role' element={<Register authToken={authToken} username={username} setToken={setToken} />} />
           <Route path="member" element={<MemberProfile setLogin={setLogin} token={token} />} />
-          <Route path="trainer" element={<TrainerProfile setTrainer={setTrainer} token={token} />} />
+          <Route path="trainer" element={<TrainerProfile setTrainer={setTrainer} setLogin={setLogin} token={token} />} />
           <Route path="*" element={<NotFound />} />
         </Route> 
 
-        <Route path="/trainer" element={<Layout token={token} login={login} setLogin={setLogin} />}>
-          <Route index element={<WelcomeTrainer username={userName} />} />
-          <Route path="profile" element={<Profile trainer={trainer} />} />
-          <Route path="messages" element={<Message trainer={trainer} />} />
-          <Route path="schedule" element={<Schedule trainer={trainer} />} />
-          <Route path="clients" element={<Clients trainer={trainer} />} />
+        <Route path="/trainer" element={<Layout token={token} setLogin={setLogin} setToken={setToken} />}>
+          <Route index element={<WelcomeTrainer username={username} />} />
+          <Route path="profile" element={<Profile trainer={trainer} token={token} />} />
+          <Route path="messages" element={<Message trainer={trainer} token={token} />} />
+          <Route path="schedule" element={<Schedule trainer={trainer} token={token} />} />
+          <Route path="clients" element={<Clients trainer={trainer} token={token} />} />
           <Route path="*" element={<NotFound />} />
         </Route>
 
-        <Route path="/member" element={<MemberLayout token={token} login={login} setLogin={setLogin} setTrainer={setTrainer}/>} >
+        <Route path="/member" element={<MemberLayout token={token} login={login} setToken={setToken} setLogin={setLogin} setTrainer={setTrainer}/>} >
           <Route index element={<WelcomeMember username={username} />} />
-          <Route path="profile" element={<Dashboard trainer={trainer} />} />
+          <Route path="profile" element={<Dashboard token={token} />} />
+          <Route path="messages" element={<MemberMessages token={token} />} />
+          <Route path="workouts" element={<MemberWorkouts token={token} />} />
+          <Route path="classes" element={<MemberClasses token={token} />} />
+          <Route path="progress" element={<Progress token={token} />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="*" element={<NotFound />} />

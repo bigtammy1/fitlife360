@@ -6,12 +6,12 @@ import Sidenav from '../components/Sidenav';
 
 
 
-const MemberLayout = ({login, setLogin, token}) => {
+const MemberLayout = ({login, setLogin, setToken, token}) => {
   
  
   return (
     <div className='flex h-screen'>
-      <Sidenav login={login} setLogin={setLogin} token={token}/>
+      <Sidenav login={login} setLogin={setLogin} setToken={setToken} token={token}/>
       
       <div className='flex-1 h-screen overflow-y-auto'>
       <Outlet />

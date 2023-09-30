@@ -67,7 +67,7 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
   };
   return (
     <>
-      <Navbar login={login} token={token} setLogin={setLogin} />
+      <Navbar login={login} setToken={setToken} token={token} setLogin={setLogin} />
       <div className='w-full min-h-[100vh] bg-white py-16 px-4'>
         {successMessage && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
