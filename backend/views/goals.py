@@ -36,14 +36,16 @@ def update_goal(goal_id) -> str:
     except KeyError:
         return make_response(jsonify({'error': 'Unauthorized access'}), 401)
     goal = storage.get(Goal, goal_id)
+    ignore = ['created_at', 'updated_at', '__class__']
     data = request.get_json()
     for k, v in data.items():
-        setattr(goal, k, v)
+        if k not in ignore:
+            setattr(goal, k, v)
     storage.save()
-    return make_response(jsonify({'message': 'goal successfully updated'}), 201)
+    return make_response(jsonify({'message': 'goal successfully updated', 'goal': goal.to_dict()}), 201)
 
 
-@app_views.route('/goal', methods=['POST'], strict_slashes=False)
+@app_views.route('/goals', methods=['POST'], strict_slashes=False)
 def create_goal():
     """create a new goal"""
     try:

@@ -7,7 +7,7 @@ from models.user import User
 from models.classes import Class
 from views import app_views
 from flask import abort, jsonify, make_response, request
-from utils import get_id_by_token, get_user_image, save_image
+from utils import get_id_by_token, get_user_with_pic, save_image
 
 
 @app_views.route('/members', methods=['GET'], strict_slashes=False)
@@ -35,7 +35,7 @@ def get_member():
     if not member:
         abort(404)
     profile_id = member.user_profile.id
-    return make_response(jsonify(get_user_image(UserProfile, profile_id)), 200)
+    return make_response(jsonify(get_user_with_pic(UserProfile, profile_id)), 200)
 
 
 @app_views.route('/member', methods=['DELETE'],
