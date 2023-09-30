@@ -136,6 +136,7 @@ function Dashboard({ token }) {
     await axios.put(`${url}/api/goal/${id}`, updatedGoals[index], {
       headers: {
         'Authorization': token,
+        'Content-Type': 'application/json'
       }
     })
     .then(response => {
@@ -156,16 +157,18 @@ function Dashboard({ token }) {
       return;
     }
 
-    const updatedGoals = [...goals, { name: newGoal, completed: false }];
-    setGoals(updatedGoals);
-    setIsModalOpen(false);
-    axios.post(`${url}/api/goals`, { goals: updatedGoals }, {
+    
+    axios.post(`${url}/api/goals`, { name: newGoal, completed: false }, {
       headers: {
         'Authorization': token
       }
     })
     .then(response => {
-      console.log('Goals updated successfully:', response.data);
+      const goal = response.data.goal
+      const updatedGoals = [...goals, goal];
+      setGoals(updatedGoals);
+      setIsModalOpen(false);
+      console.log('Goals updated successfully:', response.data.message);
     })
     .catch(error => {
       console.error('Error updating goals:', error);
