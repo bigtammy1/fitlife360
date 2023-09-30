@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 const Hero = () => {
   return (
     <div className='w-full bg-white py-16 px-4'>
-      <div class="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
+      <div className="container mx-auto flex px-5 py-24 items-center justify-center flex-col">
      
-           <div class="text-center lg:w-10/12 w-full">
+           <div className="text-center lg:w-10/12 w-full">
          <h1 className="my-4 text-5xl font-bold font-font1 leading-tight text-secondary">
          Unleash your fitness potentials from the comfort of your home
          </h1>

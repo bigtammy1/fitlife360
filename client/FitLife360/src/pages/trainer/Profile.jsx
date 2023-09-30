@@ -5,6 +5,7 @@ import { FaPhone, FaTimes, FaTrashAlt } from 'react-icons/fa';
 import { BsFillBriefcaseFill } from 'react-icons/bs';
 const url = import.meta.env.VITE_BACKEND_URL;
 
+
 const TrainerProfile = ({ token }) => {
   const [visible, setVisible] = useState(false)
   const [name, setName] = useState('John Doe');
@@ -14,7 +15,7 @@ const TrainerProfile = ({ token }) => {
   const [gender, setGender] = useState('male')
   const [picture, setPicture] = useState(null)
   const [phone, setPhone] = useState('+123-456-7890')
-  const [approach, setApproach] = useState('1-on-1 personal training, Group fitness class')
+  const [approaches, setApproaches] = useState('1-on-1 personal training, Group fitness class')
   const [specializations, setSpecializations] = useState('Strength training, Weight loss training, Personal Training')
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
@@ -22,7 +23,7 @@ const TrainerProfile = ({ token }) => {
   const [editedBio, setEditedBio] = useState(bio);
   const [editedPhone, setEditedPhone] = useState(phone);
   const [editedExperience, setEditedExperience] = useState(experience);
-  const [editedApproach, setEditedApproach] = useState(approach.split(', '));
+  const [editedApproaches, setEditedApproaches] = useState(approaches.split(', '));
   const [editedPicture, setEditedPicture] = useState('');
   const [editedSpecializations, setEditedSpecializations] = useState(specializations.split(', '));
 
@@ -37,7 +38,7 @@ const TrainerProfile = ({ token }) => {
           bio: editedBio,
           phone: editedPhone,
           experience: editedExperience,
-          approach: editedApproach,
+          approaches: editedApproaches,
           specializations: editedSpecializations,
           picture: editedPicture
         },
@@ -54,25 +55,26 @@ const TrainerProfile = ({ token }) => {
       setBio(editedBio);
       setPhone(editedPhone);
       setExperience(editedExperience);
-      setApproach(editedApproach.join(', '));
+      setApproaches(editedApproaches.join(', '));
       setSpecializations(editedSpecializations.join(', '));
       setPicture(editedPicture);
       setIsProfileModalOpen(false); // Close the modal after editing
+      window.location.reload()
     } catch (error) {
       console.error('Error updating profile:', error);
     }
   };
   const handleApproachChange = (index, value) => {
-    const updatedApproaches = [...editedApproach];
+    const updatedApproaches = [...editedApproaches];
     updatedApproaches[index] = value;
-    setEditedApproach(updatedApproaches);
+    setEditedApproaches(updatedApproaches);
   };
 
   const removeApproachInput = (index) => {
-    const updatedApproaches = [...editedApproach];
+    const updatedApproaches = [...editedApproaches];
     if (updatedApproaches.length > 1) {
     updatedApproaches.splice(index, 1); // Remove the approach input at the specified index
-    setEditedApproach(updatedApproaches);
+    setEditedApproaches(updatedApproaches);
     }
   };
 
@@ -100,7 +102,8 @@ const TrainerProfile = ({ token }) => {
         const profile = res.data;
         if (profile) {
           console.log(profile)
-          setApproach(profile.approach);
+          setApproaches(profile.approaches);
+          setBio(profile.bio);
           setName(profile.name);
           setExperience(profile.experience);
           setEmail(profile.email);
@@ -183,7 +186,7 @@ const TrainerProfile = ({ token }) => {
               <h2 className="text-xl font-semibold text-secondary font-font1">Training Approach</h2>
               <ul className="list-disc list-inside text-gray-600 font2 mt-2">
                 {
-                  approach.split(', ').map(approach => (
+                  approaches.split(', ').map(approach => (
                     <li key={approach}>{approach}</li>
                   ))
                 }   
@@ -250,7 +253,7 @@ const TrainerProfile = ({ token }) => {
               </div>
               <div className="relative mb-4">
                 <label htmlFor='approach'>Approaches</label>
-                {editedApproach.map((approach, index) => (
+                {editedApproaches.map((approach, index) => (
                   <div key={index} className="flex mb-2">
                     <input
                       className="pl-10 p-3 flex-1 rounded-md text-black border-2 border-primary"
@@ -272,7 +275,7 @@ const TrainerProfile = ({ token }) => {
                 <button
                   type="button"
                   className="mt-2 p-2 rounded-full bg-green-500 text-white"
-                  onClick={() => setEditedApproach([...editedApproach, ''])}
+                  onClick={() => setEditedApproaches([...editedApproaches, ''])}
                 >
                   Add Approach
                 </button>
