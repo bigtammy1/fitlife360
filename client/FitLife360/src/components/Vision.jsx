@@ -14,7 +14,8 @@ const Vision = () => {
           </p>
         </div>
         <div className='md:w-1/2'>
-          <img className='w-[400px] h-[400px] mx-auto my-4' src={Gym} alt='Gym' />
+          <img className='w-[400px] h-[400px] mx-auto my-4 rounded-lg shadow-lg' src={Gym} alt='Gym' />
+         
         </div>
       </div>
     </div>

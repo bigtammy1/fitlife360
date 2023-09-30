@@ -43,7 +43,7 @@ const Register = ({ authToken, username, setToken }) => {
     <>
     <div className='w-full bg-white py-16 px-4'>
       <div className='max-w-[1240px] mx-auto grid md:grid-cols-2 gap-8'>
-        <img className='w-[500px] mx-auto my-4' src={Gym} alt='/' />
+        <img className='w-[500px] mx-auto my-4 rounded-lg shadow-lg' src={Gym} alt='/' />
         <div className='flex flex-col justify-center text-center'>
         <h2 className='text-2xl font-bold mt-5 mb-2 text-secondary'>Welcome {username}</h2>
         <p className='text-lg font-medium m-3 text-footer'>Thank you for creating an account with us</p>

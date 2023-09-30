@@ -57,7 +57,7 @@ const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
       <div className='w-full bg-white py-16 px-4'>
         <div className='max-w-[1240px] mx-auto flex flex-col gap-8 md:flex-row md:items-center'>
           <div className='hidden md:block md:w-1/2'>
-            <img className='w-[400px] h-[400px] mx-auto my-4' src={Gym} alt='Gym' />
+            <img className='w-[400px] h-[400px] mx-auto my-4 rounded-lg shadow-lg' src={Gym} alt='Gym' />
           </div>
           <div className='md:w-1/2 border-2 border-primary rounded-md font-font2 p-4'>
             <div>

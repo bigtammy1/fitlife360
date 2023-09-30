@@ -73,7 +73,7 @@ const MemberProfile = ({ setLogin, token }) => {
         <div className="max-w-[1240px] mx-auto flex flex-col gap-8 md:flex-row md:items-center">
           <div className="hidden md:block md:w-1/2">
             <img
-              className="w-[400px] h-[400px] mx-auto my-4"
+              className="w-[400px] h-[400px] mx-auto my-4 rounded-lg shadow-lg"
               src={Gym}
               alt="Gym"
             />
