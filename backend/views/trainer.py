@@ -16,11 +16,8 @@ def get_trainers():
     Retrieves the list of all trainer objects
     or a specific trainer
     """
-    trainer = storage.get(User, id)
-    if not trainer:
-        abort(403)
-    all_trainers = storage.all(User).values()
-    list_trainers = [trainer.to_dict() for trainer in all_trainers if trainer.role == 'trainer']
+    all_trainers = storage.all(TrainerProfile).values()
+    list_trainers = [get_user_with_pic(TrainerProfile, trainer.id) for trainer in all_trainers]
     return make_response(jsonify(list_trainers), 200)
 
 
@@ -99,7 +96,7 @@ def put_trainer():
     if not request.form:
         abort(400, description="No form sent")
 
-    ignore = ['created_at', 'updated_at']
+    ignore = ['created_at', 'updated_at', '__class__']
 
     data = request.form
     for key, value in data.items():

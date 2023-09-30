@@ -127,3 +127,25 @@ def put_class(class_id):
             setattr(classes, key, value)
     storage.save()
     return make_response(jsonify(classes.to_dict()), 200)
+
+# book a class
+@app_views.route('/class/<class_id>/book', methods=['PUT'], strict_slashes=False)
+def book_class(class_id):
+    """Book a class"""
+    try:
+        id = get_id_by_token()
+    except KeyError:
+        abort(401)
+    classes = storage.get(Class, class_id)
+    if not classes:
+        abort(404)
+    user = storage.get(User, id)
+    if not user:
+        abort(401)
+    if user.user_profile.id in [user.id for user in classes.class_users]:
+        abort(400, description="User already booked this class")
+    if len(classes.class_users) >= classes.capacity:
+        abort(400, description="Class is full")
+    classes.class_users.append(user.user_profile)
+    storage.save()
+    return make_response(jsonify(classes.to_dict()), 200)

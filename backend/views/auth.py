@@ -122,7 +122,7 @@ def create_trainer() -> str:
         'user_id': id,
         'picture': picture_url,
         'bio': data.get('bio'),
-        'approaches': data.get('approach'),
+        'approaches': data.get('approaches'),
         'specializations': data.get('specializations'),
         'experience': data.get('experience'),
         'age': data.get('age')

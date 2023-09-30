@@ -36,23 +36,3 @@ class UserProfile(BaseModel):
     workout_plans = relationship(
         'WorkoutPlan', secondary=user_workout_plans, back_populates='user_plans')
     goals = relationship('Goal', backref='user_profile')
-
-     # Getter function for the 'name' property
-    @hybrid_property
-    def name(self):
-        return self.user.name
-
-    # Setter function for the 'name' property (optional)
-    @name.setter
-    def name(self, value):
-        self.user.name = value
-
-     # Getter function for the 'phone' property
-    @hybrid_property
-    def phone(self):
-        return self.user.phone
-
-    # Setter function for the 'phone' property (optional)
-    @name.setter
-    def phone(self, value):
-        self.user.phone = value
