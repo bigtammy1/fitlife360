@@ -1,9 +1,6 @@
 import React from 'react';
 import { Outlet } from "react-router-dom";
-import Sidebar from '../components/sidebar';
-
-
-
+import Sidebar from '../components/Sidebar';
 
 
 const TrainerLayout = ({ setLogin, token, setToken }) => {
