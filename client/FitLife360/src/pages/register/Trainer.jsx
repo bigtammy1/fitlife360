@@ -99,7 +99,7 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
       age: formData.age,
       bio: formData.bio,
       specializations: formData.specializations.join(', '),
-      approach: approaches.filter((approach) => approach.trim() !== '').join(', '), // Remove empty approaches
+      approaches: approaches.filter((approach) => approach.trim() !== '').join(', '), // Remove empty approaches
       experience: formData.experience,
     };
     console.log(requestData);
