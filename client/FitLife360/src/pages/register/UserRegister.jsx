@@ -27,7 +27,7 @@ const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSpin(true);
-    if (formData.password !== formData.confPassword) {
+    if (formData.password === formData.confPassword) {
     formData.gender.toLowerCase()
     await axios.post(`${url}/api/register`, formData, {
       headers: {
