@@ -3,7 +3,7 @@ import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Gym from '../../assets/gym3.jpg';
 import { Circles } from 'react-loader-spinner';
 import PropTypes from 'prop-types';
@@ -111,6 +111,7 @@ const Login = ({login, token, setToken, setLogin, setTrainer, username, setUsern
               >
                 <div>Login</div> <div>{spin && <Circles height={12} width={12} color='white'/>}</div>
               </button>
+              <p className='mt-3'>Don't have an account? <Link to={'/register'} className=' text-primary underline'>Register</Link></p>
             </form>
           </div>
           <img className='w-[500px] h-[400px] mx-auto my-4' src={Gym} alt='/' />

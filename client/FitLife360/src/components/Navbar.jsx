@@ -19,6 +19,7 @@ const Navbar = ({ login, token, username }) => {
 
         <ul className='hidden md:flex cursor-pointer font-font1 bg-white/5 rounded-full'>
           <li className='px-6 py-2'><Link to="/">Home</Link></li>
+          <li className='px-6 py-2'><Link to="/about">About</Link></li>
           <li className='px-6 py-2'><Link to="/trainers">Trainers</Link></li>
           <li className='px-6 py-2'><Link to="/classes">Classes</Link></li>
           <li className='px-6 py-2'><Link to="/about">About</Link></li>
@@ -26,6 +27,7 @@ const Navbar = ({ login, token, username }) => {
           {!login && (<li className='px-6 py-2'><Link to="/register">Sign up</Link></li>)}
         </ul>
 
+        
         <div onClick={toggleNav} className='block md:hidden cursor-pointer'>
           {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
         </div>
@@ -38,10 +40,11 @@ const Navbar = ({ login, token, username }) => {
             <li className='p-6 border-b border-gray-400'><Link to="/about">About</Link></li>
             {!login && <li className='p-6 border-b border-gray-400'><Link to="/login">Sign in</Link></li>}
             {!login && <li className='p-6 border-b border-gray-400'><Link to="/register">Sign up</Link></li>}
+            {!login && <li className='p-6 border-b border-gray-400'><Link to="/register">Sign up</Link></li>}
+            {login && (<li className='p-6 border-b border-gray-400'><Link to={`${token.split('_')[0] === 'member' ? '/member/profile' : '/trainer/profile'}`}>{username}</Link></li>)}
           </ul>
         </div>
 
-        {login && (<Link to={`${token.split('_')[0] === 'member' ? '/member/profile' : '/trainer/profile'}`} className='px-6 py-2'>{username}</Link>)}
       </div>
     </div>
   );

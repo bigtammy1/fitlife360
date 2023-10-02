@@ -135,17 +135,17 @@ def book_class(class_id):
     try:
         id = get_id_by_token()
     except KeyError:
-        abort(401)
+        return make_response(jsonify({'error': 'User id unauthorized'}), 401)
     classes = storage.get(Class, class_id)
     if not classes:
-        abort(404)
+        return make_response(jsonify({'error': 'Class not found'}), 404)
     user = storage.get(User, id)
     if not user:
-        abort(401)
+        return make_response(jsonify({'error': 'User not found'}), 404)
     if user.user_profile.id in [user.id for user in classes.class_users]:
-        abort(400, description="User already booked this class")
+        return make_response(jsonify({'error': "User already booked this class"}), 400)
     if len(classes.class_users) >= classes.capacity:
-        abort(400, description="Class is full")
+        return make_response(jsonify({"error": "Class is full"}), 400)
     classes.class_users.append(user.user_profile)
     storage.save()
     return make_response(jsonify(classes.to_dict()), 200)
