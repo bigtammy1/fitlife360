@@ -41,7 +41,7 @@ const Navbar = ({ login, token, username }) => {
             {!login && <li className='p-6 border-b border-gray-400'><Link to="/login">Sign in</Link></li>}
             {!login && <li className='p-6 border-b border-gray-400'><Link to="/register">Sign up</Link></li>}
             {!login && <li className='p-6 border-b border-gray-400'><Link to="/register">Sign up</Link></li>}
-            {login && (<li className='p-6 border-b border-gray-400'><Link to={`${token.split('_')[0] === 'member' ? '/member/profile' : '/trainer/profile'}`}>{username}</Link></li>)}
+            {login && <li className='p-6 border-b border-gray-400'><Link to={`${token.split('_')[0] === 'member' ? '/member/profile' : '/trainer/profile'}`}>{username}</Link></li>}
           </ul>
         </div>
 
