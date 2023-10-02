@@ -4,6 +4,7 @@ import Gym from '../../assets/gym1.jpg';
 import { HiOutlineMail } from 'react-icons/hi';
 import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import axios from 'axios';
+import { Circles } from 'react-loader-spinner';
 
 const MemberProfile = ({ setLogin, token }) => {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ const MemberProfile = ({ setLogin, token }) => {
 
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-
+  const [spin, setSpin] = useState(false);
   const url = import.meta.env.VITE_BACKEND_URL;
 
   const handlePictureChange = (e) => {
@@ -33,8 +34,7 @@ const MemberProfile = ({ setLogin, token }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData)
-    console.log(token)
+    setSpin(true);
     await axios.post(`${url}/api/member/create_profile`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -42,7 +42,6 @@ const MemberProfile = ({ setLogin, token }) => {
       }
     })
       .then(response => {
-        console.log(response.data);
         setSuccessMessage(response.data.message);
         setLogin(true);
         setFormData({
@@ -140,9 +139,9 @@ const MemberProfile = ({ setLogin, token }) => {
               </div>
               <button
                 type="submit"
-                className="mt-2 p-3 w-full rounded-md bg-primary text-white hover:bg-primary-dark"
+                className="mt-2 p-3 w-full rounded-md bg-primary flex space-x-4 justify-center items-center text-white hover:bg-primary-dark"
               >
-                Register
+                <div>Create Profile</div> <div>{spin && <Circles height={12} width={12} color='white'/>}</div>
               </button>
             </form>
           </div>

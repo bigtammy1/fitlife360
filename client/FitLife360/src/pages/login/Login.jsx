@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import axios from 'axios';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Gym from '../../assets/gym3.jpg';
-import { Circles } from 'react-loader-spinner'
+import { Circles } from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 
 const url = import.meta.env.VITE_BACKEND_URL
 
-const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
+const Login = ({login, token, setToken, setLogin, setTrainer, username, setUsername}) => {
   const initialState = {
     email: '',
     password: '',
@@ -23,7 +24,6 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
   
   const handleUserSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData)
     setSpin(true)
     await axios.post(`${url}/api/login`, formData, {
       headers: {
@@ -31,22 +31,18 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
       }
     })
       .then(response => {
-        console.log(response.data);
         setSuccessMessage(response.data.message);
         setLogin(true);
         setUsername(response.data.name)
         const role = response.data.token.split('_')[0];
         setToken(response.data.token);
         setFormData(initialState);
-        console.log('Role:', role);
         if (role === 'member') {
           console.log('Navigating to /member');
-          console.log('Role:', role);
           navigate('/member');
         } else if (role === 'trainer') {
           console.log('Navigating to /trainer');
           setTrainer('Trainer');
-          console.log('Role:', role);
           navigate('/trainer');
         }
       })
@@ -67,7 +63,7 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
   };
   return (
     <>
-      <Navbar login={login} setToken={setToken} token={token} setLogin={setLogin} />
+      <Navbar login={login} token={token} username={username} />
       <div className='w-full min-h-[100vh] bg-white py-16 px-4'>
         {successMessage && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
@@ -115,6 +111,7 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
               >
                 <div>Login</div> <div>{spin && <Circles height={12} width={12} color='white'/>}</div>
               </button>
+              <p className='mt-3'>Don't have an account? <Link to={'/register'} className=' text-primary underline'>Register</Link></p>
             </form>
           </div>
           <img className='w-[500px] h-[400px] mx-auto my-4' src={Gym} alt='/' />
@@ -124,6 +121,16 @@ const Login = ({login, token, setToken, setLogin, setTrainer, setUsername}) => {
       <Footer />
     </>
   )
+}
+
+Login.propTypes = {
+  login: PropTypes.bool.isRequired,
+  token: PropTypes.string.isRequired,
+  setToken: PropTypes.func.isRequired,
+  setLogin: PropTypes.func.isRequired,
+  setTrainer: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  setUsername: PropTypes.func.isRequired,
 }
 
 export default Login;

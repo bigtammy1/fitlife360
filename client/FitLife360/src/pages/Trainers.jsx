@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import axios from "axios";
+import PropTypes from 'prop-types';
 
 const url = import.meta.env.VITE_BACKEND_URL;
 
-const Trainers = ({login, setLogin, setToken, token}) => {
+const Trainers = ({login, token, username}) => {
     const [trainers, setTrainers] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTrainer, setSelectedTrainer] = useState(null);
-    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         axios
@@ -20,7 +20,9 @@ const Trainers = ({login, setLogin, setToken, token}) => {
                 },
             })
             .then((res) => {
-                setTrainers(res.data);
+                console.log(res.data);
+                const filteredTrainers = res.data.filter((trainer) => trainer !== null && trainer.name !== null);
+                setTrainers(filteredTrainers);
             })
             .catch((err) => {
                 console.log(err);
@@ -40,7 +42,7 @@ const Trainers = ({login, setLogin, setToken, token}) => {
 
     return ( 
         <>
-            <Navbar login={login} setToken={setToken} setLogin={setLogin} token={token} />
+            <Navbar login={login} username={username} token={token} />
             <main className="container mx-auto px-4">
                 <Hero />
                 <div className="my-8">
@@ -49,15 +51,14 @@ const Trainers = ({login, setLogin, setToken, token}) => {
                         {trainers.map((t) => {
                             return (
                                 <div key={t.id} className="bg-white p-8 shadow-md rounded">
-                                    <h5 className="text-xl font-bold mb-2">{t.name}</h5>
-                                    <p className="text-gray-600 mb-2">Description: {t.bio}</p>
-                                    <p className="text-gray-600 mb-2">Specialty: {t.specializations}</p>
-                                    <p className="text-gray-600 mb-2">Experience: {t.experience} years</p>
+                                    <h5 className="text-xl font-bold mb-2">{t.name && t.name}</h5>
+                                    <p className="text-gray-600 mb-2">Description: {t.bio && t.bio}</p>
+                                    <p className="text-gray-600 mb-2">Specialty: {t.specializations && t.specializations}</p>
+                                    <p className="text-gray-600 mb-2">Experience: {t.experience && t.experience} years</p>
                                     <button
                                         className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary"
                                         onClick={() => {
                                             setSelectedTrainer(t)
-                                            console.log(selectedTrainer)
                                             setIsModalOpen(true)}
                                         }
                                     >
@@ -143,5 +144,11 @@ const Trainers = ({login, setLogin, setToken, token}) => {
         </>
     );
 }
- 
+
+Trainers.propTypes = {
+    login: PropTypes.bool.isRequired,
+    token: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired
+};
+
 export default Trainers;

@@ -15,7 +15,6 @@ const Sidenav = ({setLogin, token, setToken}) => {
   const url = import.meta.env.VITE_BACKEND_URL
   const handleLogout = async () => {
     // handle logout
-    console.log(token)
     await axios.post(`${url}/api/logout`, null, {
       headers: {
         'Authorization': token
