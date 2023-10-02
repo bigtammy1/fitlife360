@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 
 const url = import.meta.env.VITE_BACKEND_URL;
 
-const Classes = ({ login, token, username, setToken, setLogin }) => {
+const Classes = ({ login, token, username }) => {
   const [classes, setClasses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -44,7 +44,7 @@ const Classes = ({ login, token, username, setToken, setLogin }) => {
 
   return (
     <>
-      <Navbar username={username} login={login} setToken={setToken} setLogin={setLogin} token={token} />
+      <Navbar username={username} login={login} token={token} />
       <main className="container mx-auto px-4">
         <Hero />
         <div className="my-8">
@@ -112,8 +112,6 @@ Classes.propTypes = {
   login: PropTypes.bool.isRequired,
   token: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
-  setToken: PropTypes.func.isRequired,
-  setLogin: PropTypes.func.isRequired,
 };
 
 export default Classes;

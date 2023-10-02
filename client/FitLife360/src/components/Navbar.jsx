@@ -22,8 +22,8 @@ const Navbar = ({ login, token, username }) => {
           <li className='px-6 py-2'><Link to="/trainers">Trainers</Link></li>
           <li className='px-6 py-2'><Link to="/classes">Classes</Link></li>
           <li className='px-6 py-2'><Link to="/about">About</Link></li>
-          {login && (<li className='px-6 py-2'><Link to="/login">Sign in</Link></li>)}
-          {login && (<li className='px-6 py-2'><Link to="/register">Sign up</Link></li>)}
+          {!login && (<li className='px-6 py-2'><Link to="/login">Sign in</Link></li>)}
+          {!login && (<li className='px-6 py-2'><Link to="/register">Sign up</Link></li>)}
         </ul>
 
         <div onClick={toggleNav} className='block md:hidden cursor-pointer'>
