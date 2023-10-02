@@ -26,6 +26,7 @@ import MemberMessages from './pages/member/Messages';
 import MemberClasses from './pages/member/Classes';
 import Progress from './pages/member/Progress';
 import MemberWorkouts from './pages/member/Workout';
+import Trainers from './pages/Trainers';
 
 
 
@@ -59,6 +60,7 @@ function App() {
         <Route path="/" element={<Home login={login} token={token} setToken={setToken} setLogin={setLogin} />} />
         <Route path="/about" element={<About login={login} setToken={setToken} setLogin={setLogin}/>} />
         <Route path="/classes" element={<Classes login={login} token={token} setToken={setToken} setLogin={setLogin}/>} />
+        <Route path="/trainers" element={<Trainers login={login} token={token} setToken={setToken} setLogin={setLogin}/>} />
         <Route path="/login" element={<Login login={login} token={token} setToken={setToken} setLogin={setLogin} 
           setTrainer={setTrainer} setUsername={setUsername} />} />
         

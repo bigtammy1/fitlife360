@@ -11,7 +11,7 @@ const WelcomeMember = ({ username }) => {
     // After 5 seconds, hide the component and redirect to the profile page
     const timer = setTimeout(() => {
       setVisible(false);
-      navigate('/trainer/profile');
+      navigate('/member/profile');
     }, 5000);
 
     return () => clearTimeout(timer);

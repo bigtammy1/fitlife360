@@ -9,12 +9,12 @@ const url = import.meta.env.VITE_BACKEND_URL;
 function Dashboard({ token }) {
 
   const fitnessGoals = [
-    { name: 'Run 5 miles', completed: false },
-    { name: 'Complete 100 push-ups', completed: true },
-    { name: 'Yoga for 30 minutes', completed: false },
-    { name: 'Lift weights for an hour', completed: true },
-    { name: 'Swim 10 laps', completed: false },
-    { name: 'Practice meditation', completed: true }
+    { name: 'Run 5 miles', done: false },
+    { name: 'Complete 100 push-ups', done: true },
+    { name: 'Yoga for 30 minutes', done: false },
+    { name: 'Lift weights for an hour', done: true },
+    { name: 'Swim 10 laps', done: false },
+    { name: 'Practice meditation', done: true }
   ];
 
   const [visible, setVisible] = useState(false)
@@ -68,6 +68,7 @@ function Dashboard({ token }) {
       setWeight(editedWeight);
       setPicture(editedPicture);
       setIsProfileModalOpen(false); // Close the modal after editing
+      window.location.reload()
     } catch (error) {
       console.error('Error updating profile:', error);
     }
@@ -124,14 +125,13 @@ function Dashboard({ token }) {
     })
       .then(res => setGoals(res.data))
       .catch(err => console.error(err));
-  })
+  }, [token])
 
   // edit goal
   const handleGoalClick = async (index) => {
     const updatedGoals = [...goals];
-    updatedGoals[index].completed = !updatedGoals[index].completed;
+    updatedGoals[index].done = !updatedGoals[index].done;
     console.log(updatedGoals[index])
-    setGoals(updatedGoals);
     const id = updatedGoals[index].id
     await axios.put(`${url}/api/goal/${id}`, updatedGoals[index], {
       headers: {
@@ -141,6 +141,7 @@ function Dashboard({ token }) {
     })
     .then(response => {
       console.log(`Goal updated successfully:`, response.data);
+      setGoals(updatedGoals);
     })
     .catch(error => {
       console.error(`Error updating goal:`, error);
@@ -156,9 +157,7 @@ function Dashboard({ token }) {
       alert('Goal name cannot be empty');
       return;
     }
-
-    
-    axios.post(`${url}/api/goals`, { name: newGoal, completed: false }, {
+    axios.post(`${url}/api/goals`, { name: newGoal, done: false }, {
       headers: {
         'Authorization': token
       }
@@ -241,7 +240,6 @@ function Dashboard({ token }) {
               <input
                 type="file"
                 name='picture'
-                value={editedPicture}
                 onChange={(e) => setEditedPicture(e.target.files[0])}
                 className="w-full p-2 border border-gray-300 rounded"
               />
@@ -321,12 +319,12 @@ function Dashboard({ token }) {
             <FaPlus size={25} onClick={handleClick} className='text-primary cursor-pointer'/>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
             {
               goals.map((goal, index) => (
                 <div key={index} className='flex justify-between'>
                   <p>{goal.name}</p>
-                  <p onClick={() => handleGoalClick(index)} className='cursor-pointer'>{goal.completed ? <FcCheckmark size={20} className='text-primary'/> : <HiXMark size={20} className='text-secondary'/>}</p>
+                  <p onClick={() => handleGoalClick(index)} className='cursor-pointer'>{goal.done ? <FcCheckmark size={20} className='text-primary'/> : <HiXMark size={20} className='text-secondary'/>}</p>
                 </div>
               ))
             }
