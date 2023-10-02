@@ -10,7 +10,6 @@ const Sidebar = ({ token, setLogin, setToken }) => {
   const url = import.meta.env.VITE_BACKEND_URL
   const handleLogout = async () => {
     // handle logout
-    console.log(token)
     await axios.post(`${url}/api/logout`, null, {
       headers: {
         'Content-Type': 'application/json',

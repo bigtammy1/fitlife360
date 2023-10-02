@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import axios from "axios";
+import PropTypes from 'prop-types';
 
 const url = import.meta.env.VITE_BACKEND_URL;
 
-const Classes = ({ login, setLogin, setToken, token }) => {
+const Classes = ({ login, token, username, setToken, setLogin }) => {
   const [classes, setClasses] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
@@ -43,7 +44,7 @@ const Classes = ({ login, setLogin, setToken, token }) => {
 
   return (
     <>
-      <Navbar login={login} setToken={setToken} setLogin={setLogin} token={token} />
+      <Navbar username={username} login={login} setToken={setToken} setLogin={setLogin} token={token} />
       <main className="container mx-auto px-4">
         <Hero />
         <div className="my-8">
@@ -90,7 +91,7 @@ const Classes = ({ login, setLogin, setToken, token }) => {
                         </button>
                         <button
                             className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary"
-                            onClick={bookClass(selectedClass.id)}
+                            onClick={() => bookClass(selectedClass.id)}
                         >
                             Book Class
                         </button>
@@ -105,6 +106,14 @@ const Classes = ({ login, setLogin, setToken, token }) => {
       <Footer />
     </>
   );
+};
+
+Classes.propTypes = {
+  login: PropTypes.bool.isRequired,
+  token: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
+  setToken: PropTypes.func.isRequired,
+  setLogin: PropTypes.func.isRequired,
 };
 
 export default Classes;

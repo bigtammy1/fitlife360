@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import Gym from '../../assets/gym1.jpg';
 import { HiOutlineMail, HiOutlineLockClosed } from 'react-icons/hi';
 import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import axios from 'axios';
+import { Circles } from 'react-loader-spinner';
+import PropTypes from 'prop-types';
 
 const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
   const initialState = {
@@ -18,11 +20,14 @@ const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
   const [formData, setFormData] = useState(initialState);
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
+  const [spin, setSpin] = useState(false);
   const url = import.meta.env.VITE_BACKEND_URL
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSpin(true);
+    if (formData.password !== formData.confPassword) {
     formData.gender.toLowerCase()
     await axios.post(`${url}/api/register`, formData, {
       headers: {
@@ -42,6 +47,9 @@ const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
         console.error('Error:', error.response.data);
         setErrorMessage(error.response.data.error);
       });
+    } else {
+      setErrorMessage('Passwords do not match');
+    }
   };
 
   const handleChange = (e) => {
@@ -140,10 +148,11 @@ const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
               </div>
               <button
                 type="submit"
-                className="mt-2 p-3 w-full rounded-md bg-primary text-white hover:bg-primary-dark"
+                className="mt-2 p-3 w-full rounded-md bg-primary flex space-x-4 justify-center items-center text-white hover:bg-primary-dark"
               >
-                Register
+                <div>Register</div> <div>{spin && <Circles height={12} width={12} color='white'/>}</div>
               </button>
+              <p className='mt-3'>Already have an account? <Link to={'/login'} className=' text-primary underline'>Login</Link></p>
             </form>
             {errorMessage && (
               <p className="text-red-500 mt-2">{errorMessage}</p>
@@ -154,6 +163,12 @@ const RegisterUser = ({ setLogin, setAuthToken, setUsername }) => {
       </div>
     </>
   );
+};
+
+RegisterUser.propTypes = {
+  setLogin: PropTypes.func.isRequired,
+  setAuthToken: PropTypes.func.isRequired,
+  setUsername: PropTypes.func.isRequired,
 };
 
 export default RegisterUser;

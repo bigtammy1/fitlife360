@@ -1,10 +1,6 @@
-import React from 'react';
 import { Outlet } from "react-router-dom";
 import Sidenav from '../components/Sidenav';
-
-
-
-
+import PropTypes from 'prop-types';
 
 const MemberLayout = ({login, setLogin, setToken, token}) => {
   
@@ -18,6 +14,13 @@ const MemberLayout = ({login, setLogin, setToken, token}) => {
       </div>
     </div>
   )
+}
+
+MemberLayout.propTypes = {
+  login: PropTypes.bool.isRequired,
+  setLogin: PropTypes.func.isRequired,
+  setToken: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 }
 
 export default MemberLayout;

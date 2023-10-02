@@ -1,22 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { AiOutlineFileText, AiOutlineUser } from 'react-icons/ai';
 import { FaPhone, FaTimes, FaTrashAlt } from 'react-icons/fa';
 import { BsFillBriefcaseFill } from 'react-icons/bs';
+import propTypes from 'prop-types';
+
 const url = import.meta.env.VITE_BACKEND_URL;
 
 
 const TrainerProfile = ({ token }) => {
   const [visible, setVisible] = useState(false)
-  const [name, setName] = useState('John Doe');
-  const [bio, setBio] = useState("As a certified gym instructor, I bring knowledge and expertise to help you reach your fitness goals. Whether you're aiming to build strength, shed those extra pounds, or improve your overall health, I've got you covered.");
-  const [experience, setExperience] = useState(5);
-  const [email, setEmail] = useState('john@example.com')
-  const [gender, setGender] = useState('male')
-  const [picture, setPicture] = useState(null)
-  const [phone, setPhone] = useState('+123-456-7890')
-  const [approaches, setApproaches] = useState('1-on-1 personal training, Group fitness class')
-  const [specializations, setSpecializations] = useState('Strength training, Weight loss training, Personal Training')
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState("");
+  const [experience, setExperience] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [picture, setPicture] = useState(null);
+  const [phone, setPhone] = useState('');
+  const [approaches, setApproaches] = useState('');
+  const [specializations, setSpecializations] = useState('');
 
   const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
   const [editedName, setEditedName] = useState(name);
@@ -99,9 +101,9 @@ const TrainerProfile = ({ token }) => {
         }
       })
       .then(res => {
+        console.log(res.data);
         const profile = res.data;
         if (profile) {
-          console.log(profile)
           setApproaches(profile.approaches);
           setBio(profile.bio);
           setName(profile.name);
@@ -117,7 +119,6 @@ const TrainerProfile = ({ token }) => {
       })
       .catch(err => console.error(err));
   }, [token])
-  // console.log(picture)
   const base64ToBinary = (base64Data) => {
     const binaryString = window.atob(base64Data);
     const binaryData = new Uint8Array(binaryString.length);
@@ -337,6 +338,10 @@ const TrainerProfile = ({ token }) => {
       </div>
     </div>
   );
+};
+
+TrainerProfile.propTypes = {
+  token: propTypes.string.isRequired,
 };
 
 export default TrainerProfile;

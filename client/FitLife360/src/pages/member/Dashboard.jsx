@@ -83,7 +83,6 @@ function Dashboard({ token }) {
       .then(res => {
         const profile = res.data;
         if (profile) {
-          console.log(profile)
           setWeight(profile.weight);
           setName(profile.name);
           setAge(profile.age);
@@ -131,7 +130,6 @@ function Dashboard({ token }) {
   const handleGoalClick = async (index) => {
     const updatedGoals = [...goals];
     updatedGoals[index].done = !updatedGoals[index].done;
-    console.log(updatedGoals[index])
     const id = updatedGoals[index].id
     await axios.put(`${url}/api/goal/${id}`, updatedGoals[index], {
       headers: {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -57,14 +57,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home login={login} token={token} setToken={setToken} setLogin={setLogin} />} />
-        <Route path="/about" element={<About login={login} setToken={setToken} setLogin={setLogin}/>} />
-        <Route path="/classes" element={<Classes login={login} token={token} setToken={setToken} setLogin={setLogin}/>} />
-        <Route path="/trainers" element={<Trainers login={login} token={token} setToken={setToken} setLogin={setLogin}/>} />
-        <Route path="/login" element={<Login login={login} token={token} setToken={setToken} setLogin={setLogin} 
+        <Route path="/" element={<Home login={login} token={token} username={username} />} />
+        <Route path="/about" element={<About login={login} username={username} token={token} />} />
+        <Route path="/classes" element={<Classes login={login} username={username} token={token} />} />
+        <Route path="/trainers" element={<Trainers login={login} username={username} token={token} />} />
+        <Route path="/login" element={<Login login={login} token={token} setToken={setToken} username={username} setLogin={setLogin} 
           setTrainer={setTrainer} setUsername={setUsername} />} />
         
-        <Route path="/register" element={<RegisterLayout token={token} login={login} setToken={setToken} setLogin={setLogin}/>} >
+        <Route path="/register" element={<RegisterLayout token={token} login={login} username={username} />} >
           <Route index element={<RegisterUser setLogin={setLogin} setAuthToken={setAuthToken} setUsername={setUsername} />} />
           <Route path='role' element={<Register authToken={authToken} username={username} setToken={setToken} />} />
           <Route path="member" element={<MemberProfile setLogin={setLogin} token={token} />} />

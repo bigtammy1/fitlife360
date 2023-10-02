@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineUser, AiOutlinePhone } from 'react-icons/ai';
 import { GrAdd } from 'react-icons/gr';
 import { FaTrashAlt, FaBirthdayCake } from 'react-icons/fa';
 import { LiaTimesSolid } from 'react-icons/lia';
-import {HiOutlineLockClosed} from 'react-icons/hi';
+import { Circles } from 'react-loader-spinner';
 import axios from 'axios';
 import Gym from '../../assets/gym1.jpg';
 
@@ -22,7 +22,7 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
   });
 
   const [approaches, setApproaches] = useState(['']); // Initialize with one approach input
-
+  const [spin, setSpin] = useState(false); // For the loading spinner
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
@@ -93,13 +93,13 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+    setSpin(true);
     const requestData = {
       picture: formData.picture,
       age: formData.age,
       bio: formData.bio,
       specializations: formData.specializations.join(', '),
-      approach: approaches.filter((approach) => approach.trim() !== '').join(', '), // Remove empty approaches
+      approaches: approaches.filter((approach) => approach.trim() !== '').join(', '), // Remove empty approaches
       experience: formData.experience,
     };
     console.log(requestData);
@@ -265,9 +265,9 @@ const TrainerProfile = ({ setTrainer, setLogin, token }) => {
               </div>
               <button
                 type="submit"
-                className="mt-2 p-3 w-full rounded-md bg-primary text-white hover:bg-primary-dark"
+                className="mt-2 p-3 w-full rounded-md bg-primary flex space-x-4 justify-center items-center text-white hover:bg-primary-dark"
               >
-                Register
+                <div>Create Profile</div> <div>{spin && <Circles height={12} width={12} color='white'/>}</div>
               </button>
               {errorMessage && (
           <p className="text-red-500 mt-2">{errorMessage}</p>
