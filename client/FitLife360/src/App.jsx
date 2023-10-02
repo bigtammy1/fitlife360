@@ -53,18 +53,17 @@ function App() {
   useEffect(() => {
     localStorage.setItem('trainer', trainer);
   }, [trainer]);
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home login={Boolean(login)} token={token} username={username} />} />
-        <Route path="/about" element={<About login={Boolean(login)} username={username} token={token} />} />
-        <Route path="/classes" element={<Classes login={Boolean(login)} username={username} token={token} />} />
-        <Route path="/trainers" element={<Trainers login={Boolean(login)} username={username} token={token} />} />
-        <Route path="/login" element={<Login login={Boolean(login)} token={token} setToken={setToken} username={username} setLogin={setLogin} 
+        <Route path="/" element={<Home login={JSON.parse(login)} token={token} username={username} />} />
+        <Route path="/about" element={<About login={JSON.parse(login)} username={username} token={token} />} />
+        <Route path="/classes" element={<Classes login={JSON.parse(login)} username={username} token={token} />} />
+        <Route path="/trainers" element={<Trainers login={JSON.parse(login)} username={username} token={token} />} />
+        <Route path="/login" element={<Login login={JSON.parse(login)} token={token} setToken={setToken} username={username} setLogin={setLogin} 
           setTrainer={setTrainer} setUsername={setUsername} />} />
         
-        <Route path="/register" element={<RegisterLayout token={token} login={Boolean(login)} username={username} />} >
+        <Route path="/register" element={<RegisterLayout token={token} login={JSON.parse(login)} username={username} />} >
           <Route index element={<RegisterUser setLogin={setLogin} setAuthToken={setAuthToken} setUsername={setUsername} />} />
           <Route path='role' element={<Register authToken={authToken} username={username} setToken={setToken} />} />
           <Route path="member" element={<MemberProfile setLogin={setLogin} token={token} />} />
