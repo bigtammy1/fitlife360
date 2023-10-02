@@ -114,12 +114,15 @@ def get_user_with_pic(cls: Union[User, UserProfile, TrainerProfile],
     if not pic:
         raise ValueError('User has no picture')
     # Convert pic from link to file in filepath
-    with open(pic, 'rb') as f:
-        file_data = f.read()
-    file_base64 = base64.b64encode(file_data).decode('utf-8')
-    user_dict = user.to_dict()
-    user_dict['picture'] = file_base64
-    return user_dict
+    try:
+        with open(pic, 'rb') as f:
+            file_data = f.read()
+        file_base64 = base64.b64encode(file_data).decode('utf-8')
+        user_dict = user.to_dict()
+        user_dict['picture'] = file_base64
+        return user_dict
+    except FileNotFoundError:
+        pass    
 
 def save_base64_image(base64_data: str, user_id: Union[str, int]) -> str:
     """Save a Base64 image to the server and return the file path
