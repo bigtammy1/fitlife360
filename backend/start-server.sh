@@ -2,4 +2,4 @@
 # start the environment
 sudo service mysql start
 ./redis-7.2.1/src/redis-server > /dev/null 2>&1 &
-python -m app
+python -m run

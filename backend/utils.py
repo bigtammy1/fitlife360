@@ -120,6 +120,13 @@ def get_user_with_pic(cls: Union[User, UserProfile, TrainerProfile],
         file_base64 = base64.b64encode(file_data).decode('utf-8')
         user_dict = user.to_dict()
         user_dict['picture'] = file_base64
+        all_users = storage.all(User).values()
+        for v in all_users:
+            if v.id == user_dict.get('user_id'):
+                user_dict['email'] = v.email
+                user_dict['name'] = v.name
+                user_dict['gender'] = v.gender
+                user_dict['phone'] = v.phone
         return user_dict
     except FileNotFoundError:
         pass    

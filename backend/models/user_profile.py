@@ -22,10 +22,6 @@ user_workout_plans = Table('user_workout_plans', Base.metadata,
 class UserProfile(BaseModel):
     """User profile"""
     __tablename__ = 'user_profiles'
-    email = column_property(User.email)
-    name = column_property(User.name)
-    gender = column_property(User.gender)
-    phone = column_property(User.phone)
     age = Column(Float)
     picture = Column(String(255))
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)

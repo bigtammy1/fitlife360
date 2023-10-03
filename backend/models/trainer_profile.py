@@ -12,10 +12,6 @@ from .user import User
 class TrainerProfile(BaseModel):
     """Representation of a user """
     __tablename__ = 'trainers'
-    email = column_property(User.email)
-    name = column_property(User.name)
-    gender = column_property(User.gender)
-    phone = column_property(User.phone)
     user_id = Column(String(255), ForeignKey('users.id'), nullable=False)
     age = Column(Float)
     picture = Column(String(255))

@@ -55,9 +55,3 @@ def not_found(error):
         description: a resource was not found
     """
     return make_response(jsonify({'error': "Not found"}), 404)
-
-
-# app.run(
-#     host=getenv('HOST', '0.0.0.0'), port=int(getenv('PORT', '5000')),
-#     load_dotenv=True, threaded=True
-# )
