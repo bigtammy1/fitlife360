@@ -54,7 +54,7 @@ const Register = ({ authToken, username, setToken }) => {
         </div>
       </div>
     </div>
-    <Footer />
+    
   </>
   )
 }

@@ -53,18 +53,17 @@ function App() {
   useEffect(() => {
     localStorage.setItem('trainer', trainer);
   }, [trainer]);
-
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home login={login} token={token} username={username} />} />
-        <Route path="/about" element={<About login={login} username={username} token={token} />} />
-        <Route path="/classes" element={<Classes login={login} username={username} token={token} />} />
-        <Route path="/trainers" element={<Trainers login={login} username={username} token={token} />} />
-        <Route path="/login" element={<Login login={login} token={token} setToken={setToken} username={username} setLogin={setLogin} 
+        <Route path="/" element={<Home login={JSON.parse(login)} token={token} username={username} />} />
+        <Route path="/about" element={<About login={JSON.parse(login)} username={username} token={token} />} />
+        <Route path="/classes" element={<Classes login={JSON.parse(login)} username={username} token={token} />} />
+        <Route path="/trainers" element={<Trainers login={JSON.parse(login)} username={username} token={token} />} />
+        <Route path="/login" element={<Login login={JSON.parse(login)} token={token} setToken={setToken} username={username} setLogin={setLogin} 
           setTrainer={setTrainer} setUsername={setUsername} />} />
         
-        <Route path="/register" element={<RegisterLayout token={token} login={login} username={username} />} >
+        <Route path="/register" element={<RegisterLayout token={token} login={JSON.parse(login)} username={username} />} >
           <Route index element={<RegisterUser setLogin={setLogin} setAuthToken={setAuthToken} setUsername={setUsername} />} />
           <Route path='role' element={<Register authToken={authToken} username={username} setToken={setToken} />} />
           <Route path="member" element={<MemberProfile setLogin={setLogin} token={token} />} />
@@ -81,7 +80,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Route>
 
-        <Route path="/member" element={<MemberLayout token={token} login={login} setToken={setToken} setLogin={setLogin} setTrainer={setTrainer}/>} >
+        <Route path="/member" element={<MemberLayout token={token} login={Boolean(login)} setToken={setToken} setLogin={setLogin} setTrainer={setTrainer}/>} >
           <Route index element={<WelcomeMember username={username} />} />
           <Route path="profile" element={<Dashboard token={token} />} />
           <Route path="messages" element={<MemberMessages token={token} />} />
