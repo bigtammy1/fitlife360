@@ -7,6 +7,7 @@ from models.trainer_profile import TrainerProfile
 from views import app_views
 from flask import abort, jsonify, make_response, request
 from utils import get_id_by_token
+from datetime import datetime
 
 
 @app_views.route('/validate/<class_id>', methods=['GET'], strict_slashes=False)
@@ -75,10 +76,12 @@ def delete_class(class_id):
     return make_response(jsonify({}), 200)
 
 
+
+
 @app_views.route('/class', methods=['POST'], strict_slashes=False)
 def post_class():
     """
-    Creates a classes
+    Creates a class
     """
     try:
         id = get_id_by_token()
@@ -91,10 +94,16 @@ def post_class():
     if not user:
         abort(401)
     data = request.get_json()
+
+    # Convert date_and_time from string to datetime object
+    date_and_time_str = data.get('date_and_time')
+    if date_and_time_str:
+        data['date_and_time'] = datetime.strptime(date_and_time_str, '%Y-%m-%dT%H:%M')
+
     instance = Class(**data)
     instance.trainer_id = user.trainer_profile.id
     instance.save()
-    return make_response(jsonify(instance.to_dict()), 201)
+    return make_response(jsonify({'class': instance.to_dict(), 'message': 'Class created successfully'}), 201)
 
 
 @app_views.route('/class/<class_id>', methods=['PUT'], strict_slashes=False)
@@ -122,6 +131,10 @@ def put_class(class_id):
     ignore = ['id', 'created_at', 'updated_at']
 
     data = request.get_json()
+    # Convert date_and_time from string to datetime object
+    date_and_time_str = data.get('date_and_time')
+    if date_and_time_str:
+        data['date_and_time'] = datetime.strptime(date_and_time_str, '%Y-%m-%dT%H:%M')
     for key, value in data.items():
         if key not in ignore:
             setattr(classes, key, value)
