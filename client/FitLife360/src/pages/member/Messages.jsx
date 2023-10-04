@@ -6,17 +6,17 @@ const MemberMessages = ({ token }) => {
         {
           sender: 'Big Tammy',
           message: 'Hi, I have a question about my workout routine.',
-          timestamp: '2 hours ago',
+          timestamp: '5 hours ago',
         },
         {
-          sender: 'Emma Morakinyo',
-          message: 'Could you provide some nutrition tips?',
-          timestamp: '1 day ago',
+          sender: 'Morakinyo',
+          message: 'Hello, please I need some healthy nutrition tips?',
+          timestamp: '2 day ago',
         },
         {
           sender: 'Adeh Naija',
           message: 'I need advice on improving my form during squats.',
-          timestamp: '3 days ago',
+          timestamp: '5 days ago',
         },
       ];
     
