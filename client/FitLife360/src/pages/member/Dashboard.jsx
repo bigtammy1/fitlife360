@@ -184,10 +184,15 @@ function Dashboard({ token }) {
   <div className="md:w-1/4 text-center text-white mb-4 md:mb-0" id='pictu'>
     {visible && (
       <img
-        src={picture ? URL.createObjectURL(base64ToBinary(picture)) : ''}
-        alt="Trainer picture"
-        className="w-32 h-32 mx-auto rounded-full transition ease-in bg-primary/60"
-      />
+      src={picture ? URL.createObjectURL(base64ToBinary(picture)) : ''}
+      alt="Trainer picture"
+      className="w-32 h-32 mx-auto rounded-full transition ease-in bg-primary/60"
+      onError={(e) => {
+          e.target.onerror = null; // prevent infinite loop in case fallback image also fails to load
+          e.target.src = ''; // replace 'path_to_fallback_image' with the actual path to your fallback image
+          // or display an error message
+      }}
+  />
     )}
 
     <button

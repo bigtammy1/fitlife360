@@ -143,13 +143,21 @@ const TrainerProfile = ({ token }) => {
       <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 max-w-screen-md w-full">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/4 text-center text-white" id='pictu'>
-            {
-              visible && <img
-              src={picture ? URL.createObjectURL(base64ToBinary(picture)) : ''}
-              alt="Trainer picture"
-              className="w-32 h-32 mx-auto rounded-full transition ease-in bg-primary/60"
-            />
-            }
+          {
+            visible && (
+                <img
+                    src={picture ? URL.createObjectURL(base64ToBinary(picture)) : ''}
+                    alt="Trainer picture"
+                    className="w-32 h-32 mx-auto rounded-full transition ease-in bg-primary/60"
+                    onError={(e) => {
+                        e.target.onerror = null; // prevent infinite loop in case fallback image also fails to load
+                        e.target.src = ''; // replace 'path_to_fallback_image' with the actual path to your fallback image
+                        // or display an error message
+                    }}
+                />
+            )
+          }
+
             <button onClick={() => setIsProfileModalOpen(true)} className='bg-primary text-white rounded-md font-medium p-2 mt-5 mx-auto md:mx-0 py-3 font-font2'>Edit Profile</button>
           </div>
           <div className="md:w-3/4 mt-4 md:mt-0 md:pl-4">
