@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaCalendar, FaClock } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const url = import.meta.env.VITE_BACKEND_URL;
 
@@ -61,7 +62,11 @@ const MemberClasses = ({ token }) => {
       return (
         <div className="bg-gray-100 min-h-screen flex items-center justify-center">
           <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 max-w-screen-md w-full">
+            <div className="flex justify-between">
             <h1 className="text-2xl font-semibold text-secondary font-font1 mb-4">Fitness Class Schedule</h1>
+            <Link to={'/classes'} className='rounded-lg bg-primary hover:bg-primary/70 py-2 px-7'>Add a class</Link>
+            </div>
+            
             <div className="space-y-4">
               {classes.map((classItem, index) => (
                 <div
