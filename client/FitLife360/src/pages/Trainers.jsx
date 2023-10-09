@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Hero from "../components/Hero";
+// import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import axios from "axios";
@@ -44,9 +44,15 @@ const Trainers = ({login, token, username}) => {
         <>
             <Navbar login={login} username={username} token={token} />
             <main className="container mx-auto px-4">
-                <Hero />
+            <div className="text-center lg:w-10/12 w-full m-auto pt-10">
+         <h1 className="my-4 text-5xl font-bold font-font1 leading-tight text-secondary">
+        Meet Our Trainers
+         </h1>
+         <p className="text-2xl mb-8 font-font2 text-gray-600">
+         At FitLife360, we believe that achieving your fitness goals is not only about hard work but also about having the right guidance and motivation. That's why we're proud to introduce you to our exceptional team of fitness trainers who are here to support you on your fitness journey.</p>
+         </div>
                 <div className="my-8">
-                    <h1 className="text-3xl font-bold mb-8 text-center">Trainers</h1>
+                    
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                         {trainers.map((t) => {
                             return (

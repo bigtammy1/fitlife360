@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Hero from "../components/Hero";
+// import Hero from "../components/Hero";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import axios from "axios";
@@ -46,9 +46,15 @@ const Classes = ({ login, token, username }) => {
     <>
       <Navbar username={username} login={login} token={token} />
       <main className="container mx-auto px-4">
-        <Hero />
+      <div className="text-center lg:w-10/12 w-full m-auto pt-10">
+         <h1 className="my-4 text-5xl font-bold font-font1 leading-tight text-secondary">
+        Explore Our Exciting Fitness Class Schedules
+         </h1>
+         <p className="text-2xl mb-8 font-font2 text-gray-600">
+         We offer a diverse range of fitness classes designed to keep you motivated, engaged, and on track to achieve your fitness goals. Whether you're looking to build strength, increase flexibility, boost your cardio endurance, or simply have fun while working out, we have a class for you.</p>
+         </div>
         <div className="my-8">
-          <h1 className="text-3xl font-bold mb-8 text-center">Classes</h1>
+          
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {classes.map((c) => {
               return (
