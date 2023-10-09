@@ -1,12 +1,14 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { FaCalendar, FaClock, FaPlus, FaTimes } from 'react-icons/fa';
+import { useEffect, useRef, useState } from 'react';
+import { FaCalendar, FaCheck, FaClock, FaEdit, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 import propTypes from 'prop-types'
 const url = import.meta.env.VITE_BACKEND_URL;
 
 const Schedule = ({ token }) => {
   const [classes, setClasses] = useState([]);
   const [modal, setModal] = useState(false);
+  const [classModal, setClassModal] = useState(false);
+  const [selectedClass, setSelectedClass] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -23,6 +25,8 @@ const Schedule = ({ token }) => {
     duration_minutes: '',
     capacity: '',
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const modalRef = useRef(null);
   const fitnessClasses = [
     {
       name: 'Yoga Class',
@@ -81,6 +85,28 @@ const Schedule = ({ token }) => {
       [name]: value,
     });
   };
+  const classChange = (e) => {
+    const { name, value } = e.target;
+    setClassData({
+      ...classData,
+      [name]: value,
+    });
+  };
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setClassModal(false);
+        setIsEditing(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleOutsideClick);
+
+    return () => {
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, []);
 
   const createClass = async (e) => {
     e.preventDefault()
@@ -95,8 +121,29 @@ const Schedule = ({ token }) => {
       window.location.reload()
     }).catch(err => console.log(err))
   }
+  const handleDelete = (id) => {
+    axios
+      .delete(`${url}/api/class/${id}`)
+      .then(res => {
+        alert(res.data.message);
+        setClassModal(false);
+        console.log(res.data.message);
+        window.location.reload()
+      } )
+      .catch(err => console.error(err));
+  }
+  const handleSaveChanges = (id) => {
+    axios.put(`${url}/api/class/${id}`, classData, {
+      headers: {
+        'Authorization': token,
+        'Content-Type': 'application/json',
+      }
+    }).then(res => {
+      console.log(res.data)
+    }).catch(err => console.log(err))
+  }
   return (
-    <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div className="bg-gray-100 min-h-screen flex items-center justify-center cursor-pointer">
       <div className="bg-white rounded-lg shadow-lg p-4 md:p-8 max-w-screen-md w-full">
         <div className='flex justify-between'>
           <h1 className="text-2xl font-semibold text-secondary font-font1 mb-4">Fitness Class Schedule</h1>
@@ -186,6 +233,10 @@ const Schedule = ({ token }) => {
               <div
                 key={index}
                 className="border rounded-md p-4 hover:bg-gray-200 transition duration-300 flex items-center"
+                onClick={() => {
+                  setSelectedClass(data[index])
+                  setClassModal(true)
+                }}
               >
                 <div className="text-primary text-xl mr-3">
                   <FaCalendar />
@@ -210,6 +261,122 @@ const Schedule = ({ token }) => {
                 </div>
               </div>
             ))}
+          </div>
+          <div>
+              {
+                classModal && (
+                  <div ref={modalRef}
+                   className='fixed top-0 right-0 w-1/2 rounded-s-2xl bg-secondary h-full z-10 text-white justify-center'>
+                    <div className='m-8'>
+                      <div className='flex mt-8 mb-4 justify-between'>
+                        <h2 className='font-bold text-2xl'>{isEditing ? 'Edit Class' : selectedClass.name}</h2>
+                        {isEditing ? (
+                          <div className='flex space-x-4 cursor-pointer'>
+                            <FaCheck size={25} className='text-white' onClick={() => handleSaveChanges(selectedClass.id)} />
+                            <FaTimes size={25} className='text-white' onClick={() => setIsEditing(false)} />
+                          </div>
+                        ) : (
+                          <div className='flex space-x-4 cursor-pointer'>
+                            <FaTrash size={25} className='text-white' onClick={handleDelete(selectedClass.id)} />
+                            <FaEdit size={25} onClick={() => setIsEditing(true)} />
+                          </div>
+                      )}
+                      </div>
+                      {
+                        isEditing && (
+                        <div className="mb-4">
+                          <p className='text-base'>Name</p>
+                          <input
+                            name="name"
+                            value={classData.name}
+                            onChange={classChange}
+                            className="pl-3 p-2 w-full rounded-md text-black border-2 border-primary"
+                          />
+                        </div>
+                        )
+                      }
+                      <div className="mb-4">
+                        <p className='text-base'>Description</p>
+                        {isEditing ? (
+                          <input
+                            name="description"
+                            value={classData.description}
+                            onChange={classChange}
+                            className="pl-3 p-2 w-full rounded-md text-black border-2 border-primary"
+                          />
+                        ) : (
+                          <p className='text-lg'>{selectedClass.description}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
+                        <p className='text-base'>Location</p>
+                        {isEditing ? (
+                          <input
+                            name="location"
+                            value={classData.location}
+                            onChange={classChange}
+                            className="pl-3 p-2 w-full rounded-md text-black border-2 border-primary"
+                          />
+                        ) : (
+                          <p className='text-lg'>{selectedClass.location}</p>
+                        )}                               
+                      </div>
+                          
+                      <div className="mb-4">
+                        <p className='text-base'>Date and Time</p>
+                        {isEditing ? (
+                          <input
+                            name="date_and_time"
+                            value={classData.date_and_time}
+                            onChange={classChange}
+                            className="pl-3 p-2 w-full rounded-md text-black border-2 border-primary"
+                          />
+                          ) : (
+                            <p className='text-lg'>{selectedClass.date_and_time}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
+                        <p className='text-base'>Duration</p>
+                        {isEditing ? (
+                          <input
+                            name="duration_minutes"
+                            value={classData.duration_minutes}
+                            onChange={classChange}
+                            className="pl-3 p-2 w-full rounded-md text-black border-2 border-primary"
+                          />
+                          ) : (
+                            <p className='text-lg'>{selectedClass.duration_minutes} minutes</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
+                        <p className='text-base'>Capacity</p>
+                        {isEditing ? (
+                          <input
+                            name="capacity"
+                            value={classData.capacity}
+                            onChange={classChange}
+                            className="pl-3 p-2 w-full rounded-md text-black border-2 border-primary"
+                          />
+                        ) : (
+                          <p className='text-lg'>{selectedClass.capacity}</p>
+                        )}
+                      </div>
+                       <h3 className='text-xl'>Members</h3> 
+                       {
+                        selectedClass.class_users.map((member, index) => (
+                          <div key={index} className='flex items-center justify-around'>
+                            <p className='text-lg'>{member.username}</p>
+                            <p className='text-lg'>{member.email}</p>
+                          </div>
+                        ))
+                       }
+                    </div>
+                  </div>
+                )
+              }
           </div>
       </div>
     </div>

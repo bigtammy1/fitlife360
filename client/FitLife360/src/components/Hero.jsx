@@ -15,13 +15,6 @@ const Hero = () => {
           Fitness is more than just a physical journey; it's a transformative experience that touches every aspect of your life.
          </p>
          <div className="flex justify-center mx-auto">
-           
-           <button
-             className="ml-4 bg-primary text-white font-medium rounded-md  py-4 px-8">
-              <Link to="/trainers">
-             View Trainers
-             </Link>
-           </button>
            <button
              className="ml-4 bg-primary text-white font-medium rounded-md  py-4 px-8">
               <Link to="/register">
@@ -29,8 +22,7 @@ const Hero = () => {
              </Link>
            </button>
          </div>
-         </div>
-    
+         </div>    
       </div>
     </div>
   );

@@ -33,7 +33,6 @@ import Trainers from './pages/Trainers';
 function App() {
   // login details to localStorage
   
-  
   const [login, setLogin] = useState(localStorage.login || false);
   const [username, setUsername] = useState(localStorage.username || '');
   const [token, setToken] = useState(localStorage.token || '');
@@ -49,10 +48,31 @@ function App() {
   }, [username]);
   useEffect(() => {
     localStorage.setItem('token', token);
+    const timestamp = new Date().getTime(); // Correct way to get the current timestamp
+    localStorage.setItem('tokenTimestamp', timestamp.toString()); // Store the timestamp as a string
   }, [token]);
+  
   useEffect(() => {
     localStorage.setItem('trainer', trainer);
   }, [trainer]);
+
+  useEffect(() => {
+    // Retrieve stored token and timestamp from localStorage
+    const storedToken = localStorage.getItem('token');
+    const storedTimestamp = localStorage.getItem('tokenTimestamp');
+
+    if (storedToken && storedTimestamp) {
+      const currentTimestamp = new Date().getTime();
+      const timeElapsed = (currentTimestamp - parseInt(storedTimestamp, 10)) / (1000 * 60 * 60); // Convert milliseconds to hours
+
+      if (timeElapsed >= 48) {
+        // If 48 hours have passed, clear localStorage and redirect to login
+        localStorage.clear();
+        window.location.href = '/login';
+      }
+    }
+  }, []);
+
   return (
     <Router>
       <Routes>
