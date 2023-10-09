@@ -111,10 +111,10 @@ const Login = ({login, token, setToken, setLogin, setTrainer, username, setUsern
               >
                 <div>Login</div> <div>{spin && <Circles height={12} width={12} color='white'/>}</div>
               </button>
-              <p className='mt-3'>Don't have an account? <Link to={'/register'} className=' text-primary underline'>Register</Link></p>
+              <p className='mt-3'>Don&apos;t have an account? <Link to={'/register'} className=' text-primary underline'>Register</Link></p>
             </form>
           </div>
-          <img className='w-[500px] h-[400px] mx-auto my-4' src={Gym} alt='/' />
+          <img className='hidden md:block w-[500px] h-[400px] mx-auto my-4 ' src={Gym} alt='/' />
         </div>
        
       </div>
