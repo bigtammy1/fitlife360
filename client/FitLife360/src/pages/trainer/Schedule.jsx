@@ -364,7 +364,15 @@ const Schedule = ({ token }) => {
                           <p className='text-lg'>{selectedClass.capacity}</p>
                         )}
                       </div>
-                        
+                       <h3 className='text-xl'>Members</h3> 
+                       {
+                        selectedClass.class_users.map((member, index) => (
+                          <div key={index} className='flex items-center justify-around'>
+                            <p className='text-lg'>{member.username}</p>
+                            <p className='text-lg'>{member.email}</p>
+                          </div>
+                        ))
+                       }
                     </div>
                   </div>
                 )
